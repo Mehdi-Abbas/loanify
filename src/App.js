@@ -1,24 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import UseWindowDimensions from './components/Screensize';
+import Welcome from './screens/Welcome'
+import Login from './screens/Login'
+import Signup from './screens/Signup'
+import Forgetpassword from './screens/ForgetPassword'
+
 
 function App() {
+  const { height } = UseWindowDimensions();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+    <div style={{ display: 'flex', height: height, flexDirection: "column", alignItems: 'center' }}>
+      <Router>
+        <Switch>
+          <Route exact path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          <Route path="/forgetpassword">
+            <Forgetpassword />
+          </Route>
+          <Route path="/">
+            <Login />
+          </Route>
+        </Switch>
+      </Router>
     </div>
+
   );
 }
 

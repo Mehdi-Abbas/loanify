@@ -28,12 +28,13 @@ a {
   color: rgb(12, 99, 180);
   background-color: rgb(155, 197, 236);
   margin: 10px;
-  padding: 10px 20px;
+  width: 130px;
+  padding: 20px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .iconwrapper .iconframe img{
-  width: 90px;
+  width: 70px;
 }
 .iconwrapper .iconframe span{
   text-align: center;
@@ -53,13 +54,14 @@ a {
   align-items: center;
   color: rgb(105, 105, 0);
   background-color: rgba(255, 255, 0, 0.568);
+  width: 130px;
   margin: 10px;
-  padding: 10px 20px;
+  padding: 20px;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .iconwrapper .iconframeborrower img{
-  width: 90px;
+  width: 70px;
 }
 .iconwrapper .iconframeborrower span{
   text-align: center;

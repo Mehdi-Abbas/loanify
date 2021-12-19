@@ -17,8 +17,8 @@ const DashboardLender = () => {
                     <div className="icon">
                         <img src="settings.png"></img>
                     </div>
-                    <br/>
-                    <span>Setup</span>
+                    
+                    <span>Setup</span><br/>
 
                 </div>
                 <div className='iconframeborrower'>
@@ -31,8 +31,8 @@ const DashboardLender = () => {
                     <div className="icon">
                         <img src="search.png"></img>
                     </div>
-                    <br/>
-                    <span>Search</span>
+                    
+                    <span>Search</span><br/>
                 </div>
                 <div className='iconframeborrower'>
                     <div className="icon">
@@ -44,15 +44,15 @@ const DashboardLender = () => {
                     <div className="icon">
                         <img src="profile.png"></img>
                     </div>
-                    <br/>
-                    <span>Profile</span>
+                   
+                    <span>Profile</span> <br/>
                 </div>
                 <div className='iconframeborrower'>
                     <div className="icon">
                         <img src="about.png"></img>
                     </div>
-                    <br/>
-                    <span>About</span>
+                    
+                    <span>About</span><br/>
                 </div>
 
             </div>

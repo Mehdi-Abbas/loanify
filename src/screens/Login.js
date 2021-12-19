@@ -14,18 +14,27 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { OnSubmit } from '../Redux/Action/Action';
 import { LoadingButton } from '@mui/lab';
+import { Radio } from '@mui/material';
+import { FormLabel } from '@mui/material';
+import { RadioGroup } from '@mui/material';
+import { FormControl } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
+import { useRadioGroup } from '@mui/material/RadioGroup';
 const theme = createTheme();
 
 const Login = (props) => {
-    
+
     let { path } = useRouteMatch();
-   
+
     const [isLoggedin, setLoggedin] = useState(false)
     const [loading, setLoad] = useState(false)
+    const [role, setRole] = useState('lender')
 
-    
+    // let role=undefined
 
-    
+    const handleChange = (e) => {
+        setRole(e.target.value)
+    }
 
     const handleSubmit = (event) => {
         setLoad(true)
@@ -41,7 +50,7 @@ const Login = (props) => {
     //     event.preventDefault();
     //     const data = new FormData(event.currentTarget);
     //     // eslint-disable-next-line no-console
-       
+
 
 
 
@@ -148,7 +157,26 @@ const Login = (props) => {
                                     id="password"
                                     autoComplete="current-password"
                                 />
-                                
+                                <FormControl component="fieldset">
+                                    {/* <FormLabel component="legend">Role</FormLabel> */}
+                                    <RadioGroup row
+                                        aria-label="role"
+                                        defaultValue="lender"
+                                        value={role}
+                                        name="controlled-radio-buttons-group"
+                                        onChange={handleChange}
+                                    >
+                                        <FormControlLabel value="lender" control={
+                                            <Radio
+                                                checked={role==='lender'}
+                                            />}
+                                            label="Lender" />
+                                        <FormControlLabel value="borrower" control={
+                                            <Radio/>} label="Borrower" />
+
+                                    </RadioGroup>
+                                </FormControl>
+
                                 <LoadingButton
                                     disable={loading}
                                     type="submit"
@@ -170,10 +198,14 @@ const Login = (props) => {
                                 Forgot password?
                             </Link>
                         </Box>
-                        
+
                     </Container>
                 </ThemeProvider>
-            </> : <Redirect to={`/welcome`} />}
+            </> :
+                <>
+                    {role === 'borrower' ? <Redirect to={`/dashboardborrower`} />:<Redirect to={`/dashboardlender`} />}
+                </>
+            }
         </>
     );
 }

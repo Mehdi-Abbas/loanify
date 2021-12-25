@@ -99,3 +99,86 @@ a {
   display: flex;
   justify-content: space-between;
 }
+
+.All-loons{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 4px 0;
+  
+  font-size: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.089);
+  padding: 10px;
+}
+.All-loons span{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  
+}
+.All-loons span p{
+  font-size: 1rem;
+}
+.investmentContainer .investments .summary{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 4px 0;
+  font-size: 1.2rem;
+  /* background-color: rgba(0, 0, 0, 0.089); */
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-bottom: 25px;
+}
+
+.investmentContainer .investments .summary .row{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 5px 0;
+  
+  
+}
+.investmentContainer .investments .summary .row h5{
+  text-align: left;
+  
+}
+.investmentContainer .investments .summary .row p{
+  text-align: right;
+  
+}
+.MuiBox-root.css-lp4wj0 {
+  padding: 13
+px
+;
+}
+.MuiBox-root.css-lp4wj0 p#modal-modal-description {
+  margin-top: 6px;
+}
+.paid-loans{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px 0;
+  font-size: 1.2rem;
+  background-color: rgb(136, 219, 134);
+  padding: 10px;
+  border-radius: 10px;
+}
+.paid-loans .icon{
+  color: rgb(6, 56, 4);
+  margin-left: 10px;
+}
+.unpaid-loans{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 4px 0;
+  font-size: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.226);
+  padding: 10px;
+  border-radius: 10px;
+  color: rgb(114, 113, 113);
+}

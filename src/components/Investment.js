@@ -4,6 +4,7 @@ import { Modal } from '@mui/material';
 import { Link } from 'react-router-dom'
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import StarIcon from '@mui/icons-material/Star';
 
 
 const Investment = (props) => {
@@ -11,6 +12,7 @@ const Investment = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    
     return (
         <div className="InvestmentList">
             <span>{props.name}</span>
@@ -26,7 +28,7 @@ const Investment = (props) => {
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h4" component="h2">
                         {props.name}
-                    </Typography><br/><br/>
+                    </Typography><br /><br />
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>NIC:</h4>
@@ -41,29 +43,21 @@ const Investment = (props) => {
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
-                            <h4>Amount:</h4>
-                            <p>PKR 18,000</p>
+                            <h4>City:</h4>
+                            <p>Karachi</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
-                            <h4>Interest Rate:</h4>
-                            <p>21%</p>
+                            <h4>Rating:</h4>
+                            <p style={{ display: 'flex' }}>3.5  <StarIcon fontSize='small' /></p>
                         </div>
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="detail">
-                            <h4>Mode:</h4>
-                            <p>Test Mode</p>
-                        </div>
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="detail">
-                            <h4>Payment Method:</h4>
-                            <p>Bank Transfer</p>
-                        </div>
-                    </Typography>
-                    
+                    <br/><br/>
+                    <div style={{ width: '100%', textAlign: 'center' }}>
+                        <Link to='/dashboardlender/investment/allinvestments'><Button variant="contained">All Loans</Button></Link>
+                    </div>
+
                 </Box>
             </Modal>
 

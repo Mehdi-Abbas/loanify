@@ -12,7 +12,8 @@ import DashboardLender from './screens/DashboardLender';
 import SetupLender from './screens/SetupLender'
 import DashboardBorrower from './screens/DashboardBorrower'
 import Investment from './screens/Investment';
-// import InvestmentDetail from './screens/InvestmentDetail'
+import AllInvestments from './screens/AllInvestments'
+import LoanDetail from './screens/LoanDetail';
 
 function App() {
   const { height } = UseWindowDimensions();
@@ -36,8 +37,19 @@ function App() {
                   render={({ match: { url } }) => (
                     <>
                       <Route path={`${url}/`} component={Investment} exact />
-                      {/* <Route path={`${url}/investmentdetails`} component={InvestmentDetail} /> */}
+                      <Route
+                        path={`${url}/allinvestments`}
+                        render={({ match: { url } }) => (
+                          <>
+                            <Route path={`${url}/`} component={AllInvestments} exact />
+                            <Route path={`${url}/investmentdetail`} component={LoanDetail} />
+                            
+
+                          </>
+                        )}
+                      />
                       
+
                     </>
                   )}
                 />

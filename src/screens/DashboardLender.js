@@ -3,58 +3,52 @@ import UseWindowDimensions from '../components/Screensize';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { Link } from 'react-router-dom'
+import Titlebar from '../components/Titlebar';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const DashboardLender = () => {
     const { height } = UseWindowDimensions();
 
     return (
-        <div className="dashboard" style={{ height: height }}>
-            <Link to="/">LOGOUT</Link>
-            <h1>Lender Dashboard</h1>
+        <div className="dashboard" style={{ minHeight: height }}>
+            {/* <Link to="/">LOGOUT</Link> */}
+            {/* <h1>Lender Dashboard</h1> */}
+            <Link to='/'><LogoutIcon style={{position:'absolute', right:'10px', top:'20px', color:'white', fontSize:'2rem'}}/></Link>
+            <Titlebar title="Lender Dashboard" />
+            <br />
             <div className='iconwrapper'>
-                <Link to='/dashboardlender/setup'>
-                    <div className='iconframe'>
-                        <div className="icon">
-                            <img src="settings.png"></img>
-                        </div>
-                        
-                        <span>Setup</span><br/>
+                
+                <Link className='iconframe' to='/dashboardlender/investment'>
+
+                    <div className="icon">
+                        <img src="deal.png"></img>
                     </div>
+                    <span>Loans</span>
+
                 </Link>
-                <Link to='/dashboardlender/investment'>
-                    <div className='iconframe'>
-                        <div className="icon">
-                            <img src="money.png"></img>
-                        </div>
-                        <span>Current <br />Investments</span>
+                <Link className='iconframe' to='/dashboardlender/setup'>
+
+                    <div className="icon">
+                        <img src="money.png"></img>
                     </div>
+
+                    <span>Invest Amount</span>
+
                 </Link>
                 <div className='iconframe'>
                     <div className="icon">
-                        <img src="search.png"></img>
+                        <img src="clock.png"></img>
                     </div>
-                    <span>Search</span><br/>
-                </div>
-                <div className='iconframe'>
-                    <div className="icon">
-                        <img src="wait.png"></img>
-                    </div>
-                    <span>Request <br />Status</span>
+                    <span>Investment History</span>
                 </div>
                 <div className='iconframe'>
                     <div className="icon">
                         <img src="profile.png"></img>
                     </div>
-                    
-                    <span>Profile</span><br/>
+
+                    <span>My Profile</span>
                 </div>
-                <div className='iconframe'>
-                    <div className="icon">
-                        <img src="about.png"></img>
-                    </div>
-                    
-                    <span>About</span><br/>
-                </div>
+                
 
             </div>
 

@@ -14,12 +14,13 @@ import DashboardBorrower from './screens/DashboardBorrower'
 import Investment from './screens/Investment';
 import AllInvestments from './screens/AllInvestments'
 import LoanDetail from './screens/LoanDetail';
+import BorrowerDetails from './screens/BorrowerDetails';
 
 function App() {
   const { height } = UseWindowDimensions();
   return (
 
-    <div style={{ display: 'flex', height: height, flexDirection: "column", alignItems: 'center' }}>
+    <div style={{ display: 'flex', minHeight: height, flexDirection: "column", alignItems: 'center' }}>
       <Router>
         <Switch>
           {/* <Route exact path="/dashboardlender">
@@ -48,7 +49,7 @@ function App() {
                           </>
                         )}
                       />
-                      
+                      <Route path={`${url}/borrowerdetails`} component={BorrowerDetails} />
 
                     </>
                   )}

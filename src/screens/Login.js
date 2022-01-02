@@ -117,8 +117,9 @@ const Login = (props) => {
             {!isLoggedin ? <>
                 <ThemeProvider theme={theme}>
                     <Container component="main" maxWidth="xs">
-                        <br />
-                        <Link to="/"><ArrowBackIcon /></Link>
+                    <br />
+                    <br />
+                        {/* <Link to="/"><ArrowBackIcon /></Link> */}
 
                         <CssBaseline />
 
@@ -129,13 +130,15 @@ const Login = (props) => {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                             }}
+                            className="formbox"
                         >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                 <LockOutlinedIcon />
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Login
-                            </Typography>
+                            </Avatar> */}
+                            <div>
+                                <img src="loanify logo 2.png" style={{width:'180px'}}/>
+                            </div>
+                            
                             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                                 <TextField
                                     margin="normal"

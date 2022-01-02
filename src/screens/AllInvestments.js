@@ -3,21 +3,21 @@ import UseWindowDimensions from '../components/Screensize';
 import { Link } from 'react-router-dom'
 import InvestmentUnit from '../components/InvestmentDetail'
 import NumberFormat from 'react-number-format';
-
+import Titlebar from '../components/Titlebar';
 const AllInvestment = () => {
     const { height } = UseWindowDimensions();
 
     return (
-        <div className="investmentContainer" style={{ height: height }}>
-            <h1>All Loans</h1>
+        <div className="investmentContainer" style={{ minHeight: height }}>
+            <Titlebar title="All Loans" backlink="/dashboardlender/investment" />
             <div className='investments'>
                 <div className="summary">
                     <div className="row">
-                        <h5>Total amount <br/>invested:</h5>
+                        <h5>Total Amount Invested</h5>
                         <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={23678100} /></p>
                     </div>
                     <div className="row">
-                        <h5>Total amount <br/>returned:</h5>
+                        <h5>Total Amount Returned</h5>
                         <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={236100} /></p>
                     </div>
                 </div>

@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // import fire from '../helpers/db';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { LoadingButton } from '@mui/lab';
+import Titlebar from '../components/Titlebar';
+import NumberFormat from 'react-number-format';
 
 
 const theme = createTheme();
@@ -93,12 +95,13 @@ const Signup = () => {
 
     return (
         <>
-            {isRegestered ? <Redirect to="/" /> : <>
-                <div style={{ display: 'flex', flex:'auto' }}>
+            {isRegestered ? <Redirect to="/dashboardlender" /> : <>
+                <div style={{ display: 'flex', flexDirection: 'column', flex: 'auto', alignItems: 'center', width:'100%' }}>
+                    <Titlebar title="Invest Amount" backlink="/dashboardlender" />
                     <ThemeProvider theme={theme}>
                         <Container component="main" maxWidth="xs">
-                            <br />
-                            <Link to="/dashboardlender"><ArrowBackIcon /></Link>
+                            {/* <br /> */}
+                            {/* <Link to="/dashboardlender"><ArrowBackIcon /></Link> */}
                             {/* <CssBaseline /> */}
                             <Box
                                 sx={{
@@ -108,12 +111,18 @@ const Signup = () => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                                {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                     <SettingsIcon/>
                                 </Avatar>
                                 <Typography component="h1" variant="h5">
                                     Set up
-                                </Typography>
+                                </Typography> */}
+                                <div className="summary">
+                                    <div className="row">
+                                        <h5>Current Balance</h5>
+                                        <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={23678100} /></p>
+                                    </div>
+                                </div>
                                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12}>
@@ -129,6 +138,7 @@ const Signup = () => {
                                         </Grid>
 
                                         <Grid item xs={12}>
+                                            
                                             <TextField
                                                 required
                                                 fullWidth
@@ -137,6 +147,9 @@ const Signup = () => {
                                                 name="amount"
 
                                             />
+                                            <div style={{width:'100%', textAlign:'left', marginTop:'10px', fontSize:'0.8rem'}}>
+                                                *Amount will add in your wallet after the approval
+                                            </div>
                                         </Grid>
 
 
@@ -150,7 +163,7 @@ const Signup = () => {
                                         loading={loading}
 
                                     >
-                                        Set
+                                        Request Approval
                                     </LoadingButton>
 
                                 </Box>

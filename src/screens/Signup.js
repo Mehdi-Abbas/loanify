@@ -105,13 +105,14 @@ const Signup = () => {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                             }}
+                            className="formbox"
                         >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                 
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Sign up
-                            </Typography>
+                            </Avatar> */}
+                            <div>
+                                <img src="loanify logo 2.png" style={{width:'180px'}}/>
+                            </div>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>

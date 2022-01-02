@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import NumberFormat from 'react-number-format';
 import EditIcon from '@mui/icons-material/Edit';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const InstallmentPaid = (props) => {
     const [date, setDate] = React.useState(props.date)
@@ -20,7 +21,7 @@ const InstallmentPaid = (props) => {
         setDate(event.target.value)
     }
     const handleChangeAmount = (event) => {
-        
+
         setAmount(event.target.value)
     }
 
@@ -36,14 +37,15 @@ const InstallmentPaid = (props) => {
             {amount !== '0' ?
                 <div className="paid-loans">
                     <span>{date}</span>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', width: 'auto' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: 'auto', alignItems: 'center' }}>
                         <span><p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={amount} /></p></span>
-                        <span className='icon'><EditIcon onClick={handleOpen} /></span>
+                        {/* <span className='icon'><EditIcon onClick={handleOpen} /></span> */}
+                        {props.verified ? <VerifiedIcon style={{ fontSize:'2rem', color:'rgb(72 163 72)', backgroundColor:'#fff', borderRadius:'100%', marginLeft:'10px'}}/>:<span className='icon'><EditIcon onClick={handleOpen} /></span>}
                     </div>
                 </div> :
                 <div className="unpaid-loans">
                     <span>{date}</span>
-                    <span><Button onClick={handleOpen} variant="contained">Paid</Button></span>
+                   <span><Button onClick={handleOpen} variant="contained">Paid</Button></span>
 
                 </div>
 
@@ -55,7 +57,7 @@ const InstallmentPaid = (props) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -89,12 +91,18 @@ const InstallmentPaid = (props) => {
 
 
                         </Grid>
-                        <div style={{ width: '100%', textAlign: 'center', marginTop: '30px' }}>
+                        {/* <div>*Payment will confirm after verification.</div> */}
+                        <div style={{ width: '100%', textAlign: 'left', marginTop: '10px', fontSize: '0.8rem' }}>
+                        *Payment will confirm after verification.
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', width: '80%', textAlign: 'center', marginTop: '30px' }}>
                             <Button variant="contained" type='submit'>
                                 Confirm
                             </Button>
+                            <Button variant="contained" type='submit'>
+                                Cancel
+                            </Button>
                         </div>
-
                     </Box>
                 </Box>
             </Modal>
@@ -108,8 +116,9 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '95%',
+    maxWidth: '400px',
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
+    border: '2px solid #fbdd44',
     boxShadow: 24,
     p: 4,
 };

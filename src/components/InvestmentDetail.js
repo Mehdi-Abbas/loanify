@@ -17,9 +17,9 @@ const InvestmentDetail = (props) => {
         <div className="All-loons">
             <Link to='/dashboardlender/investment/allinvestments/investmentdetail'>
                 <div>
-                    <span><h5>Date:</h5> <p>{props.date}</p></span>
-                    <span><h5>Principal: </h5><p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.principal} /></p></span>
-                    <span><h5>Amount Repaid: </h5><p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.returned} /></p></span>
+                    <span><h5>Date</h5> <p>{props.date}</p></span>
+                    <span><h5>Amount </h5><p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.principal} /></p></span>
+                    <span><h5>Amount Repaid </h5><p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.returned} /></p></span>
                 </div>
             </Link>
             

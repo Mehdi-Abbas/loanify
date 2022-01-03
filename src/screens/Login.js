@@ -148,7 +148,7 @@ const Login = (props) => {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
-                                    autoFocus
+                                    
                                 />
                                 <TextField
                                     margin="normal"
@@ -176,6 +176,8 @@ const Login = (props) => {
                                             label="Lender" />
                                         <FormControlLabel value="borrower" control={
                                             <Radio/>} label="Borrower" />
+                                        <FormControlLabel value="inspection" control={
+                                            <Radio/>} label="Inpection" />
 
                                     </RadioGroup>
                                 </FormControl>
@@ -206,7 +208,7 @@ const Login = (props) => {
                 </ThemeProvider>
             </> :
                 <>
-                    {role === 'borrower' ? <Redirect to={`/dashboardborrower`} />:<Redirect to={`/dashboardlender`} />}
+                    {role === 'borrower' ? <Redirect to={`/dashboardborrower`} />: (role==='inspection'?<Redirect to={`/dashboardinspection`} />:<Redirect to={`/dashboardlender`} />)}
                 </>
             }
         </>

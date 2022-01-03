@@ -7,48 +7,52 @@ import { Link } from 'react-router-dom'
 import Titlebar from '../components/Titlebar';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-const DashboardLender = () => {
+const DashboardBorrower = () => {
     const { height } = UseWindowDimensions();
     return (
         <div className="dashboard" style={{ minHeight: height }}>
             {/* <Link to="/">LOGOUT</Link> */}
             {/* <h1>Lender Dashboard</h1> */}
-            <Link to='/'><LogoutIcon style={{position:'absolute', right:'10px', top:'20px', color:'white', fontSize:'2rem'}}/></Link>
+            <Link to='/'><LogoutIcon style={{ position: 'absolute', right: '10px', top: '20px', color: 'white', fontSize: '2rem' }} /></Link>
             <Titlebar title="Borrower Dashboard" />
             <br />
             <div className='iconwrapper'>
-                <Link className='iconframe' to='/dashboardlender/setup'>
+                <Link className='iconframe' to='/dashboardborrower/searchinvestor'>
 
                     <div className="icon">
-                        <img src="settings.png"></img>
+                        <img src="search.png"></img>
                     </div>
 
-                    <span>Setup Amount</span>
+                    <span>Search Investor</span>
 
                 </Link>
-                <Link className='iconframe' to='/dashboardlender/investment'>
+                <Link className='iconframe' to='/dashboardborrower/requesttracking'>
 
-                    <div className="icon">
-                        <img src="money.png"></img>
-                    </div>
-                    <span>Current Investments</span>
-
-                </Link>
-                
-                <div className='iconframe'>
                     <div className="icon">
                         <img src="wait.png"></img>
                     </div>
-                    <span>Request Status</span>
-                </div>
-                <div className='iconframe'>
+                    <span>Request Tracking</span>
+
+                </Link>
+                <Link className='iconframe' to='/dashboardborrower/approvedloans'>
+
+                    <div className="icon">
+                        <img src="checked.png"></img>
+                    </div>
+                    <span>Approved Loans</span>
+
+                </Link>
+                <Link className='iconframe' to='/dashboardborrower/profile'>
+
                     <div className="icon">
                         <img src="profile.png"></img>
                     </div>
 
                     <span>My Profile</span>
-                </div>
+
+                </Link>
                 
+
 
             </div>
 
@@ -60,4 +64,4 @@ const DashboardLender = () => {
 
 
 
-export default DashboardLender
+export default DashboardBorrower

@@ -58,6 +58,36 @@ main.MuiContainer-root.MuiContainer-maxWidthXs.css-nzinn5-MuiContainer-root a {
   color: rgba(0, 0, 0, 0.753);
   font-size: 1.3rem;
 }
+.iconwrappergrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  /* display: flex;
+  flex-direction: column;
+  width: 100%; */
+  align-items: center;
+}
+.iconwrappergrid .iconframe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 12px;
+  width: 130px; 
+   height: 130px;
+  padding: 13px;
+  border-radius: 20px;
+  box-shadow: #fbdd44 0px 0px 0px 3px;
+}
+.iconwrappergrid .iconframe img {
+  width: 50px;
+}
+.iconwrappergrid .iconframe span {
+  text-align: center;
+  font-weight: bold;
+  margin-left: 10px;
+  color: rgba(0, 0, 0, 0.753);
+  font-size: 0.9rem;
+}
 .dashboard {
   display: flex;
   align-items: center;
@@ -175,6 +205,7 @@ main.MuiContainer-root.MuiContainer-maxWidthXs.css-nzinn5-MuiContainer-root a {
 .investmentContainer .investments .summary .row p {
   text-align: right;
 }
+
 .MuiBox-root.css-lp4wj0 {
   padding: 13 px;
 }
@@ -222,6 +253,7 @@ main.MuiContainer-root.MuiContainer-maxWidthXs.css-nzinn5-MuiContainer-root a {
   padding: 20px 10px;
   width: 100%;
   display: flex;
+  align-items: center;
   flex-direction: row;
   color: white;
   background: linear-gradient(
@@ -298,6 +330,39 @@ button.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-s
   font-size: 1.7rem;
   font-weight: bold;
 }
+.summaryprofit {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 20px 0;
+  font-size: 1.2rem;
+  background-color: #fbdd44;
+  padding: 10px 10px 55px 10px;
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  margin-bottom: 25px;
+  /* background-color: white; */
+  border-radius: 10px;
+  /* border:2px solid #fbdd44 */
+  position: relative;
+}
+.summaryprofit .row {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0;
+  color:#444
+}
+
+ .summaryprofit .row p {
+ 
+    margin-top: 5px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 3px 1px 3px rgb(5 37 85);
+ }
 .css-1izfg5m {
   background-color: #fff;
   width: 100%;
@@ -319,4 +384,23 @@ header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAp
   border-radius: 10px 10px 0 0;
   color: rgb(5 37 85);
   font-weight: bold;
+}
+.Profit{
+  position: absolute;
+    top: 70%;
+    right: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fbdd44;
+    border-radius: 100%;
+    padding: 0px 10px 29px 10px;
+}
+.Profit .num{
+  font-size: 2.1rem;
+    color: rgb(255 255 255);
+    font-weight: 1000;
+    /* -webkit-text-stroke: 0.1px #3595ee; */
+    text-shadow: 3px 1px 3px rgb(66, 65, 5);
 }

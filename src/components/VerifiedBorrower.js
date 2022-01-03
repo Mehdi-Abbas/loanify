@@ -32,15 +32,15 @@ const VerifiedBorrower = (props) => {
                     <VerifiedIcon style={{position:'absolute', right:'0px', bottom:'20px', fontSize:'1rem', color:'#fff', backgroundColor:'#00acee', borderRadius:'100%'}}/>
                 </Link>
                 <div style={{ display: 'flex', flexDirection: 'column' }} onClick={handleOpenInfo}>
-                    <span style={{ fontSize: '1.2rem' }}>{props.name}</span>
-                    <span ><NumberFormat style={{ fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '4px 8px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
-                    <span style={{ display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span>
+                    <span style={{ fontSize: '1rem' }}>{props.name}</span>
+                    {props.amount && <span ><NumberFormat style={{ fontSize:'1rem',fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>}
+                    <span style={{ fontSize:'1rem',display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span>
                 </div>
 
 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '80px' }}>
-                <Button variant="contained" onClick={handleOpen}>Make Deal</Button>
+                <Button variant="contained" onClick={handleOpen}>{props.loan ? 'get loan' : 'make deal'}</Button>
 
             </div>
             {/* <Button onClick={handleOpen} variant="contained">Details</Button> */}

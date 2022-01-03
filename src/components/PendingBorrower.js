@@ -31,15 +31,15 @@ const PendingBorrower = (props) => {
                     <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '2.5rem' }} />
                 </Link>
                 <div style={{ display: 'flex', flexDirection: 'column' }} onClick={handleOpenInfo}>
-                    <span style={{ fontSize: '1.2rem' }}>{props.name}</span>
-                    <span ><NumberFormat style={{ fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '4px 8px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
-                    <span style={{ display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span>
+                    <span style={{ fontSize: '1rem' }}>{props.name}</span>
+                    {props.amount && <span ><NumberFormat style={{ fontSize:'1rem',fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>}
+                    <span style={{ fontSize:'1rem',display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span>
                 </div>
 
 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '80px' }}>
-                {props.cancelable ==="true" ? <Button variant="contained" onClick={handleOpen}>Cancel</Button>:<div style={{fontSize:'1rem', fontStyle:'italic', color:'#666'}}>In progress...</div>}
+                {props.cancelable ==="true" ? <Button variant="contained" onClick={handleOpen}>{props.req ? 'Send Request':'cancel'}</Button>:<div style={{fontSize:'1rem', fontStyle:'italic', color:'#666'}}>In progress...</div>}
 
             </div>
             {/* <Button onClick={handleOpen} variant="contained">Details</Button> */}

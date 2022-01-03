@@ -123,7 +123,7 @@ const Signup = () => {
                                             fullWidth
                                             id="name"
                                             label="Full Name"
-                                            autoFocus
+                                            // autoFocus
                                         />
                                     </Grid>
                                     

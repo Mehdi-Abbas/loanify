@@ -1,19 +1,13 @@
 {
-  "short_name": "Loanify",
   "name": "Loanify",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "loanify logo 2.png",
+      "src": "loanify logo 2_no_text_192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "loanify logo 2.png",
+      "src": "loanify logo 2_512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

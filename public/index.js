@@ -4,7 +4,7 @@ import * as serviceWorker from './worker.js';
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/worker.js', {scope: '/'}).then(function (registration) {
+        navigator.serviceWorker.register('/loanify/worker.js', {scope: '/loanify/'}).then(function (registration) {
             console.log('Worker registration successful', registration.scope);
         }, function (err) {
             console.log('Worker registration failed', err);

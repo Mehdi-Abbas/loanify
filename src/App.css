@@ -269,21 +269,19 @@ main.MuiContainer-root.MuiContainer-maxWidthXs.css-nzinn5-MuiContainer-root a {
   margin-left: 5px;
 }
 
-button.MuiLoadingButton-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-fullWidth.MuiButtonBase-root.css-1qudo6r-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+/* button.MuiLoadingButton-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-fullWidth.MuiButtonBase-root.css-1qudo6r-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
   font-weight: bold;
   font-size: 1.5rem;
   border-radius: 30px;
-  /* width: 158 px; */
   background-color: #fbdd44;
   color: black;
-}
+} */
 .MuiBox-root.css-vvpofk {
   text-align: center;
 }
 .MuiOutlinedInput-notchedOutline.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
   border-color: #fbdd44;
   box-shadow: #fbdd44 0px 0px 0px 2px;
-  /* background-color: white; */
 }
 .css-vqmohf-MuiButtonBase-root-MuiRadio-root .Mui-checked {
   color: rgba(255, 255, 0, 0.459);
@@ -293,7 +291,6 @@ button.MuiLoadingButton-root.MuiButton-root.MuiButton-contained.MuiButton-contai
   color: rgba(255, 255, 0, 0.459);
 }
 button.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButtonBase-root.css-sghohy-MuiButtonBase-root-MuiButton-root {
-  /* background-color: #ffff009c; */
   background-color: #fbdd44;
   color: black;
   font-weight: bold;

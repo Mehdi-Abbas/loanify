@@ -10,7 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import fire from '../helpers/db';
+import fire from '../helpers/db';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { OnSubmit } from '../Redux/Action/Action';
 import { LoadingButton } from '@mui/lab';
@@ -36,81 +36,81 @@ const Login = (props) => {
         setRole(e.target.value)
     }
 
-    const handleSubmit = (event) => {
-        setLoad(true)
-        setTimeout(() => { setLoad(false) }, 10000);
-        event.preventDefault();
-
-        setLoggedin(true)
-    }
-
     // const handleSubmit = (event) => {
     //     setLoad(true)
     //     setTimeout(() => { setLoad(false) }, 10000);
     //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
-    //     // eslint-disable-next-line no-console
+
+    //     setLoggedin(true)
+    // }
+
+    const handleSubmit = (event) => {
+        setLoad(true)
+        setTimeout(() => { setLoad(false) }, 10000);
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        // eslint-disable-next-line no-console
 
 
 
 
-    //     let em = data.get('email')
-    //     let pass = data.get('password')
+        let em = data.get('email')
+        let pass = data.get('password')
 
-    //     OnSubmit_(em)
-    //     console.log(dataValue)
-    //     if (em.length < 4) {
-    //         alert('Please enter an email address.');
-    //         return;
-    //     }
-    //     if (pass.length < 4) {
-    //         alert('Please enter a password.');
-    //         return;
-    //     }
-    //     // Create user with email and pass.
-    //     fire.auth().signInWithEmailAndPassword(em, pass)
-    //         .then((result) => {
-    //             localStorage.setItem("role",'student')
+        //OnSubmit_(em)
+        //console.log(dataValue)
+        if (em.length < 4) {
+            alert('Please enter an email address.');
+            return;
+        }
+        if (pass.length < 4) {
+            alert('Please enter a password.');
+            return;
+        }
+        // Create user with email and pass.
+        fire.auth().signInWithEmailAndPassword(em, pass)
+            .then((result) => {
+                localStorage.setItem("role",'lender')
 
-    //             fire.database().ref('student').once('value').then ((snapshot) => {
-    //                 const students = snapshot.val();
-    //                 for (let id in students) {
-    //                     if(students[id].auth_id===result.user.uid){
-    //                         localStorage.setItem("student_id",id)
-    //                         localStorage.setItem("role", 'student')
-    //                         localStorage.setItem('user', data);
-    //                     };
-    //                 }
-    //             });
+                fire.database().ref('student').once('value').then ((snapshot) => {
+                    const students = snapshot.val();
+                    for (let id in students) {
+                        if(students[id].auth_id===result.user.uid){
+                            localStorage.setItem("student_id",id)
+                            localStorage.setItem("role", 'student')
+                            localStorage.setItem('user', data);
+                        };
+                    }
+                });
 
-    //             // const token = result.credential.accessToken;
-    //             const user = result.user;
-    //             const data = user.email
+                // const token = result.credential.accessToken;
+                const user = result.user;
+                const data = user.email
 
-    //             localStorage.setItem('user', data);
-    //             props.signin(data);
-    //             console.log("logged in")
-    //             setLoggedin(true)
-    //         })
-    //         .catch(function (error) {
-    //             // Handle Errors here.
-    //             var errorCode = error.code;
-    //             var errorMessage = error.message;
-    //             if (errorCode === 'auth/wrong-password') {
-    //                 alert('Wrong password.');
-    //             } else {
-    //                 alert(errorMessage);
-    //             }
-    //             console.log(error);
-    //             //   document.getElementById('quickstart-sign-in').disabled = false;
-    //         });
+                localStorage.setItem('user', data);
+                props.signin(data);
+                console.log("logged in")
+                setLoggedin(true)
+            })
+            .catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode === 'auth/wrong-password') {
+                    alert('Wrong password.');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error);
+                //   document.getElementById('quickstart-sign-in').disabled = false;
+            });
 
 
-    //     // console.log({
-    //     //     email_: em,
-    //     //     password_: pass,
-    //     // });
-    // };
+        // console.log({
+        //     email_: em,
+        //     password_: pass,
+        // });
+    };
 
     return (
         <>

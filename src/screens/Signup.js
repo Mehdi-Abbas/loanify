@@ -10,7 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import fire from '../helpers/db';
+import fire from '../helpers/db';
 import { LoadingButton } from '@mui/lab';
 
 
@@ -24,71 +24,70 @@ const Signup = () => {
     const [loading, setLoad] = useState(false)
     
 
-    const handleSubmit = (event) => {
-        setLoad(true)
-        setTimeout(() => { setLoad(false) }, 10000);
-        event.preventDefault();
-
-        setRegester(true)
-    }
-
     // const handleSubmit = (event) => {
     //     setLoad(true)
     //     setTimeout(() => { setLoad(false) }, 10000);
     //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
+
+    //     setRegester(true)
+    // }
+
+    const handleSubmit = (event) => {
+        setLoad(true)
+        setTimeout(() => { setLoad(false) }, 10000);
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
        
        
         
-    //     // console.log(email)
-    //     let em = data.get('email').toUpperCase()
-    //     let pass = data.get('password')
-    //     let id__ = em.substring(0, 4) + '-' + em.substring(4, 8) + '-' + em.substring(8, 12)
-    //     let nm = data.get('name').toUpperCase()
-    //     if (em.length < 4) {
-    //         alert('Please enter an email address.');
-    //         return;
-    //     }
-    //     if (pass.length < 4) {
-    //         alert('Please enter a password.');
-    //         return;
-    //     }
+        // console.log(email)
+        let em = data.get('email').toUpperCase()
+        let pass = data.get('password')
+        let nm = data.get('name').toUpperCase()
+        if (em.length < 4) {
+            alert('Please enter an email address.');
+            return;
+        }
+        if (pass.length < 4) {
+            alert('Please enter a password.');
+            return;
+        }
        
-    //     fire.auth().createUserWithEmailAndPassword(em, pass)
-    //         .then(
-    //             (res) => {
-    //                 // console.log(res)
-    //                 fire.database().ref('student').push({
-    //                     email: em,
-    //                     student_id: id__,
-    //                     name: nm,
-    //                     auth_id:res.user.uid
-    //                 })
-    //                 .then((docRef) => {
-    //                     localStorage.setItem('student_id',docRef.path.pieces_[1])
-    //                 })
-    //                 setRegester(true)
-    //             }
+        fire.auth().createUserWithEmailAndPassword(em, pass)
+            .then(
+                (res) => {
+                    // console.log(res)
+                    fire.database().ref('user').push({
+                        email: em,
+                        name: nm,
+                        auth_id:res.user.uid
+                    })
+                    .then((docRef) => {
+                        console.log(docRef._delegate._path.pieces_[1])
+                        localStorage.setItem('user_id',docRef._delegate._path.pieces_[1])
+                    })
+                    setRegester(true)
+                }
 
-    //         )
-    //         .catch(function (error) {
-    //             // Handle Errors here.
-    //             var errorCode = error.code;
-    //             var errorMessage = error.message;
-    //             if (errorCode === 'auth/weak-password') {
-    //                 alert('The password is too weak.');
-    //             } else {
-    //                 alert(errorMessage);
-    //             }
-    //             console.log(error);
-    //         });
+            )
+            .catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                if (errorCode === 'auth/weak-password') {
+                    alert('The password is too weak.');
+                } else {
+                    alert(errorMessage);
+                }
+                console.log(error);
+            });
 
 
-    //     // console.log({
-    //     //     email: data.get('email'),
-    //     //     password: data.get('password'),
-    //     // });
-    // };
+        // console.log({
+        //     email: data.get('email'),
+        //     password: data.get('password'),
+        // });
+    };
 
     return (
         <>

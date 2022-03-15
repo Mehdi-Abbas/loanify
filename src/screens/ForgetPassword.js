@@ -11,7 +11,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import fire from '../helpers/db';
+import fire from '../helpers/db';
 import { LoadingButton } from '@mui/lab';
 
 const theme = createTheme();
@@ -22,51 +22,51 @@ const ForgetPassword = (props) => {
     const [isEmailSent, setEmailSent]=useState(false)
     const [loading, setLoad] = useState(false)
 
-    const handleSubmit = (event) => {
-        setLoad(true)
-        setTimeout(() => { setLoad(false) }, 10000);
-        event.preventDefault();
-
-        
-    }
-
     // const handleSubmit = (event) => {
     //     setLoad(true)
     //     setTimeout(() => { setLoad(false) }, 10000);
     //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
-    //     // eslint-disable-next-line no-console
-        
-        
-    //     let em = data.get('email')
 
-    //     if (em.length < 4) {
-    //         alert('Please enter an email address.');
-    //         return;
-    //     }
-    //     // Create user with email and pass.
-    //     fire.auth().sendPasswordResetEmail(em).then(function() {
-    //         // Password Reset Email Sent!
+        
+    // }
+
+    const handleSubmit = (event) => {
+        setLoad(true)
+        setTimeout(() => { setLoad(false) }, 10000);
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        // eslint-disable-next-line no-console
+        
+        
+        let em = data.get('email')
+
+        if (em.length < 4) {
+            alert('Please enter an email address.');
+            return;
+        }
+        // Create user with email and pass.
+        fire.auth().sendPasswordResetEmail(em).then(function() {
+            // Password Reset Email Sent!
             
-    //         alert('Password Reset Email Sent!');
-    //         setEmailSent(true)
-    //       }).catch(function(error) {
-    //         // Handle Errors here.
-    //         var errorCode = error.code;
-    //         var errorMessage = error.message;
-    //         if (errorCode === 'auth/invalid-email') {
-    //           alert(errorMessage);
-    //         } else if (errorCode === 'auth/user-not-found') {
-    //           alert(errorMessage);
-    //         }
-    //         console.log(error);
-    //       });
+            alert('Password Reset Email Sent!');
+            setEmailSent(true)
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/invalid-email') {
+              alert(errorMessage);
+            } else if (errorCode === 'auth/user-not-found') {
+              alert(errorMessage);
+            }
+            console.log(error);
+          });
 
 
-    //     console.log({
-    //         email_: em
-    //     });
-    // };
+        console.log({
+            email_: em
+        });
+    };
 
     return (
         <>

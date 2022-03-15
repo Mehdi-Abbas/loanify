@@ -12,6 +12,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import fire from '../helpers/db';
 import { LoadingButton } from '@mui/lab';
+import { RadioGroup } from '@mui/material';
+import { FormControl } from '@mui/material';
+import { Radio } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
 
 
 const theme = createTheme();
@@ -22,7 +26,7 @@ const Signup = () => {
     
     const [isRegestered, setRegester] = useState(false)
     const [loading, setLoad] = useState(false)
-    
+    const [role_, setRole] = useState('lender')
 
     // const handleSubmit = (event) => {
     //     setLoad(true)
@@ -31,6 +35,10 @@ const Signup = () => {
 
     //     setRegester(true)
     // }
+
+    const handleChange = (e) => {
+        setRole(e.target.value)
+    }
 
     const handleSubmit = (event) => {
         setLoad(true)
@@ -60,7 +68,8 @@ const Signup = () => {
                     fire.database().ref('user').push({
                         email: em,
                         name: nm,
-                        auth_id:res.user.uid
+                        auth_id:res.user.uid,
+                        role: role_
                     })
                     .then((docRef) => {
                         console.log(docRef._delegate._path.pieces_[1])
@@ -113,7 +122,7 @@ const Signup = () => {
                                 <img src="loanify logo 2.png" style={{width:'180px'}}/>
                             </div>
                             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                <Grid container spacing={2}>
+                                <Grid container spacing={2} sx={{ justifyContent:'center'}}>
                                     <Grid item xs={12}>
                                         <TextField
                                             autoComplete="given-name"
@@ -122,7 +131,6 @@ const Signup = () => {
                                             fullWidth
                                             id="name"
                                             label="Full Name"
-                                            // autoFocus
                                         />
                                     </Grid>
                                     
@@ -147,6 +155,28 @@ const Signup = () => {
                                             autoComplete="new-password"
                                         />
                                     </Grid>
+                                    <FormControl component="fieldset">
+                                    {/* <FormLabel component="legend">Role</FormLabel> */}
+                                    <RadioGroup row
+                                        aria-label="role"
+                                        defaultValue="lender"
+                                        value={role_}
+                                        name="controlled-radio-buttons-group"
+                                        onChange={handleChange}
+                                        sx={{mt:1}}
+                                    >
+                                        <FormControlLabel value="lender" control={
+                                            <Radio
+                                                checked={role_==='lender'}
+                                            />}
+                                            label="Lender" />
+                                        <FormControlLabel value="borrower" control={
+                                            <Radio/>} label="Borrower" />
+                                        <FormControlLabel value="inspection" control={
+                                            <Radio/>} label="Inpection" />
+
+                                    </RadioGroup>
+                                </FormControl>
                                     
                                 </Grid>
                                 <LoadingButton

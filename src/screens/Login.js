@@ -70,14 +70,13 @@ const Login = (props) => {
         // Create user with email and pass.
         fire.auth().signInWithEmailAndPassword(em, pass)
             .then((result) => {
-                localStorage.setItem("role",'lender')
+                
 
-                fire.database().ref('student').once('value').then ((snapshot) => {
-                    const students = snapshot.val();
-                    for (let id in students) {
-                        if(students[id].auth_id===result.user.uid){
-                            localStorage.setItem("student_id",id)
-                            localStorage.setItem("role", 'student')
+                fire.database().ref('user').once('value').then ((snapshot) => {
+                    const users = snapshot.val();
+                    for (let id in users) {
+                        if(users[id].auth_id===result.user.uid && users[id].role===role){
+                            localStorage.setItem("role",role)
                             localStorage.setItem('user', data);
                         };
                     }
@@ -88,7 +87,7 @@ const Login = (props) => {
                 const data = user.email
 
                 localStorage.setItem('user', data);
-                props.signin(data);
+                //props.signin(data);
                 console.log("logged in")
                 setLoggedin(true)
             })

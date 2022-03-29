@@ -173,7 +173,7 @@ const Signup = () => {
                                         <FormControlLabel value="borrower" control={
                                             <Radio/>} label="Borrower" />
                                         <FormControlLabel value="inspection" control={
-                                            <Radio/>} label="Inpection" />
+                                            <Radio/>} label="Inspection" />
 
                                     </RadioGroup>
                                 </FormControl>

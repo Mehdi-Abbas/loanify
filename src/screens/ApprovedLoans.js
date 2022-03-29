@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import UseWindowDimensions from '../components/Screensize';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -16,34 +16,57 @@ import { useTheme } from '@mui/material/styles';
 import LoanRequest from '../components/LoanRequest';
 import PendingBorrower from '../components/PendingBorrower';
 import VerifiedBorrower from '../components/VerifiedBorrower';
+import Login from "./Login"
 // import PropTypes from 'prop-types';
 
 
 
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
+    const [validUser, setValidUser] = useState(false);
+
+    // let { url } = useRouteMatch();
+    // console.log(url)
+    const userState = () => {
+        const userEmail = localStorage.getItem('user');
+        const userRole = localStorage.getItem('role');
+
+        setValidUser(userEmail && userRole && userRole === 'borrower')
+    }
+    useEffect(() => {
+        userState();
+      }, []);
     return (
-        <div style={{ minHeight: height, width: width }}>
-            <Titlebar title="Approved Loans" backlink="/dashboardborrower" />
-            <div className="investmentContainer" style={{  width: width }}>
+        <>
+            {validUser ? (
+                <>
+                    <div style={{ minHeight: height, width: width }}>
+                        <Titlebar title="Approved Loans" backlink="/dashboardborrower" />
+                        <div className="investmentContainer" style={{ width: width }}>
 
-                <div className='investments'>
-                    {/* <VerifiedBorrower */}
-                    <VerifiedBorrower name="Ahmed Ali"  rating="4.5" loan="true"/>
-                    <VerifiedBorrower name="Mohammad Saad"  rating="4.5"  loan="true"/>
-                    <VerifiedBorrower name="Bilal Khan"  rating="4.5"  loan="true"/>
-                    <VerifiedBorrower name="Ahsan Raza"  rating="4.5" loan="true" />
-                    <VerifiedBorrower name="Fawad Hassan"  rating="4.5"  loan="true"/>
-                    <VerifiedBorrower name="Aliza Sheikh"  rating="4.5"  loan="true"/>
+                            <div className='investments'>
+                                {/* <VerifiedBorrower */}
+                                <VerifiedBorrower name="Ahmed Ali" rating="4.5" loan="true" />
+                                <VerifiedBorrower name="Mohammad Saad" rating="4.5" loan="true" />
+                                <VerifiedBorrower name="Bilal Khan" rating="4.5" loan="true" />
+                                <VerifiedBorrower name="Ahsan Raza" rating="4.5" loan="true" />
+                                <VerifiedBorrower name="Fawad Hassan" rating="4.5" loan="true" />
+                                <VerifiedBorrower name="Aliza Sheikh" rating="4.5" loan="true" />
 
-                </div>
-            </div>
-
-
+                            </div>
+                        </div>
 
 
 
-        </div>
+
+
+                    </div>
+                </>
+            ) : (
+                <Login signin={(isValidUser) => setValidUser(isValidUser)} />
+            )}
+        </>
+
     )
 }
 

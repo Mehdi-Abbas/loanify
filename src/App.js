@@ -28,6 +28,9 @@ import ApprovedLenderRequest from './screens/ApprovedLenderRequest';
 import ApprovedBorrowerRequest from './screens/ApprovedBorrowerRequest';
 import RejectedLenderRequest from './screens/RejecteLenderRequest';
 import RejectedBorrowerRequest from './screens/RejectedBorrowerRequest';
+import LenderProfileEditor from './screens/LenderProfileEditor';
+import BorrowerProfileEditor from './screens/BorrowerProfileEditor';
+import LenderSetting from './screens/LenderSetting'
 
 function App() {
   const { height } = UseWindowDimensions();
@@ -46,7 +49,15 @@ function App() {
                 <Route path={`${url}/`} component={DashboardLender} exact />
                 <Route path={`${url}/setup`} component={SetupLender} />
                 <Route path={`${url}/investmenthistory`} component={InvestmentHistory} />
-                <Route path={`${url}/profile`} component={LenderProfile} />
+                <Route
+                  path={`${url}/profile`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={LenderProfile} exact />
+                      <Route path={`${url}/profileeditor`} component={LenderProfileEditor} />
+                    </>
+                  )}
+                />
                 <Route
                   path={`${url}/investment`}
                   render={({ match: { url } }) => (
@@ -58,12 +69,11 @@ function App() {
                           <>
                             <Route path={`${url}/`} component={AllInvestments} exact />
                             <Route path={`${url}/investmentdetail`} component={LoanDetail} />
-                            
-
                           </>
                         )}
                       />
                       <Route path={`${url}/borrowerdetails`} component={BorrowerDetails} />
+                      <Route path={`${url}/lendersetting`} component={LenderSetting} />
 
                     </>
                   )}
@@ -77,7 +87,15 @@ function App() {
               <>
                 <Route path={`${url}/`} component={DashboardBorrower} exact />
                 <Route path={`${url}/searchinvestor`} component={SearchInvestor} />
-                <Route path={`${url}/profile`} component={BorrowerProfile} />
+                <Route
+                  path={`${url}/profile`}
+                  render={({ match: { url } }) => (
+                    <>
+                      <Route path={`${url}/`} component={BorrowerProfile} exact />
+                      <Route path={`${url}/profileeditor`} component={BorrowerProfileEditor} />
+                    </>
+                  )}
+                />
                 <Route path={`${url}/requesttracking`} component={RequestTracking} />
                 <Route path={`${url}/approvedloans`} component={ApprovedLoans} />
               </>

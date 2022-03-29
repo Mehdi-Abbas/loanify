@@ -46,7 +46,7 @@ const Login = (props) => {
 
     const handleSubmit = (event) => {
         setLoad(true)
-        setTimeout(() => { setLoad(false) }, 10000);
+        
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
@@ -76,20 +76,31 @@ const Login = (props) => {
                     const users = snapshot.val();
                     for (let id in users) {
                         if(users[id].auth_id===result.user.uid && users[id].role===role){
+                            localStorage.setItem("user_id", id)
                             localStorage.setItem("role",role)
-                            localStorage.setItem('user', data);
-                        };
+                            localStorage.setItem('user',data.get('email'))
+                            props.signin && props.signin(true);
+                            console.log("logged in")
+                            setLoggedin(true)
+                        }
+                        else if(users[id].auth_id===result.user.uid && users[id].role!=role){
+                            console.log(users[id].role)
+                            console.log(role)
+                            console.log(users[id].role===role)
+                            alert("Select valid role")
+                            setLoad(false)
+                            break
+                        }
                     }
                 });
-
+                
                 // const token = result.credential.accessToken;
-                const user = result.user;
-                const data = user.email
+                // const user = result.user;
+                // const data = user.email
 
-                localStorage.setItem('user', data);
+                // localStorage.setItem('user', data);
                 //props.signin(data);
-                console.log("logged in")
-                setLoggedin(true)
+                
             })
             .catch(function (error) {
                 // Handle Errors here.
@@ -101,6 +112,7 @@ const Login = (props) => {
                     alert(errorMessage);
                 }
                 console.log(error);
+                setLoad(false)
                 //   document.getElementById('quickstart-sign-in').disabled = false;
             });
 
@@ -176,7 +188,7 @@ const Login = (props) => {
                                         <FormControlLabel value="borrower" control={
                                             <Radio/>} label="Borrower" />
                                         <FormControlLabel value="inspection" control={
-                                            <Radio/>} label="Inpection" />
+                                            <Radio/>} label="Inspection" />
 
                                     </RadioGroup>
                                 </FormControl>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -15,6 +15,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { LoadingButton } from '@mui/lab';
 import Titlebar from '../components/Titlebar';
 import NumberFormat from 'react-number-format';
+import Login from './Login';
+import fire from '../helpers/db';
+import Alert from '@mui/material/Alert';
+import { number } from 'prop-types';
+
 
 
 const theme = createTheme();
@@ -23,159 +28,179 @@ const Signup = () => {
 
 
 
-    const [isRegestered, setRegester] = useState(false)
+    const [amount, setAmount] = useState(0)
     const [loading, setLoad] = useState(false)
+    const [fetchedAmount, setFetchedAmount] = useState(0)
+    const [isUpdated, setIsUpdated] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(true);
+    const [isAdding, setIsAdding] = useState(true);
+    
 
-
-    const handleSubmit = (event) => {
-        setLoad(true)
-        setTimeout(() => { setLoad(false) }, 10000);
-        event.preventDefault();
-
-        setRegester(true)
-    }
 
     // const handleSubmit = (event) => {
     //     setLoad(true)
     //     setTimeout(() => { setLoad(false) }, 10000);
     //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
+
+    //     setRegester(true)
+    // }
+
+    const [validUser, setValidUser] = useState(false);
+
+    // let { url } = useRouteMatch();
+    // console.log(url)
+    const userState = () => {
+        const userEmail = localStorage.getItem('user');
+        const userRole = localStorage.getItem('role');
+
+        setValidUser(userEmail && userRole && userRole === 'lender')
+
+        fire.database().ref('user/' + localStorage.getItem('user_id')).on('value', (data) => {
+            data.val().balance && (setFetchedAmount(data.val().balance))
+
+            setIsDisabled(false)
+            setIsUpdated(true)
+            setTimeout(() => { setIsUpdated(false) }, 3000)
+        })
+    }
+
+    useEffect(() => {
+        userState();
+    }, []);
+
+    const handleSubmit = (event) => {
+        setLoad(true)
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        setAmount(0)
 
 
+        // console.log(email)
+        let bl = data.get('amount')
 
-    //     // console.log(email)
-    //     let em = data.get('email').toUpperCase()
-    //     let pass = data.get('password')
-    //     let id__ = em.substring(0, 4) + '-' + em.substring(4, 8) + '-' + em.substring(8, 12)
-    //     let nm = data.get('name').toUpperCase()
-    //     if (em.length < 4) {
-    //         alert('Please enter an email address.');
-    //         return;
-    //     }
-    //     if (pass.length < 4) {
-    //         alert('Please enter a password.');
-    //         return;
-    //     }
-
-    //     fire.auth().createUserWithEmailAndPassword(em, pass)
-    //         .then(
-    //             (res) => {
-    //                 // console.log(res)
-    //                 fire.database().ref('student').push({
-    //                     email: em,
-    //                     student_id: id__,
-    //                     name: nm,
-    //                     auth_id:res.user.uid
-    //                 })
-    //                 .then((docRef) => {
-    //                     localStorage.setItem('student_id',docRef.path.pieces_[1])
-    //                 })
-    //                 setRegester(true)
-    //             }
-
-    //         )
-    //         .catch(function (error) {
-    //             // Handle Errors here.
-    //             var errorCode = error.code;
-    //             var errorMessage = error.message;
-    //             if (errorCode === 'auth/weak-password') {
-    //                 alert('The password is too weak.');
-    //             } else {
-    //                 alert(errorMessage);
-    //             }
-    //             console.log(error);
-    //         });
+        fire.database().ref('user/' + localStorage.getItem('user_id')).update({
+            balance: isAdding ? parseInt(bl) + parseInt(fetchedAmount) : parseInt(fetchedAmount) >= parseInt(bl) ? parseInt(fetchedAmount) - parseInt(bl) : parseInt(fetchedAmount)
+        })
+            .then(() => {
 
 
-    //     // console.log({
-    //     //     email: data.get('email'),
-    //     //     password: data.get('password'),
-    //     // });
-    // };
+                setLoad(false)
+                setIsAdding(true)
+            })
+            .catch(function (error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert(errorMessage);
+                console.log(error);
+            });
+    };
+
+    const changeAmount = (e) => {
+        setAmount(e.target.value)
+    }
 
     return (
         <>
-            {isRegestered ? <Redirect to="/dashboardlender" /> : <>
-                <div style={{ display: 'flex', flexDirection: 'column', flex: 'auto', alignItems: 'center', width:'100%' }}>
-                    <Titlebar title="Invest Amount" backlink="/dashboardlender" />
-                    <ThemeProvider theme={theme}>
-                        <Container component="main" maxWidth="xs">
-                            {/* <br /> */}
-                            {/* <Link to="/dashboardlender"><ArrowBackIcon /></Link> */}
-                            {/* <CssBaseline /> */}
-                            <Box
-                                sx={{
-                                    marginTop: 0,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            {validUser ? (
+                <>
+                    <div style={{ display: 'flex', flexDirection: 'column', flex: 'auto', alignItems: 'center', width: '100%' }}>
+                        <Titlebar title="Invest Amount" backlink="/dashboardlender" />
+                        {isUpdated && <Alert onClose={() => { setIsUpdated(false) }} style={{ position: 'absolute', top: '85px', right: '10px', zIndex: '10' }}>Amount updated</Alert>}
+                        <ThemeProvider theme={theme}>
+                            <Container component="main" maxWidth="xs">
+                                {/* <br /> */}
+                                {/* <Link to="/dashboardlender"><ArrowBackIcon /></Link> */}
+                                {/* <CssBaseline /> */}
+                                <Box
+                                    sx={{
+                                        marginTop: 0,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                                     <SettingsIcon/>
                                 </Avatar>
                                 <Typography component="h1" variant="h5">
                                     Set up
                                 </Typography> */}
-                                <div className="summary">
-                                    <div className="row">
-                                        <h5>Current Balance</h5>
-                                        <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={23678100} /></p>
+                                    <div className="summary">
+                                        <div className="row">
+                                            <h5>Current Balance</h5>
+                                            <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={fetchedAmount} /></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                required
-                                                name="bankname"
-                                                required
-                                                fullWidth
-                                                id="bankname"
-                                                label="Bank Name"
-                                                autoFocus
-                                            />
+                                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                                        <Grid container spacing={2} sx={{mb:1}}>
+                                            {/* <Grid item xs={12}>
+                                                <TextField
+                                                    required
+                                                    name="bankname"
+                                                    fullWidth
+                                                    id="bankname"
+                                                    label="Bank Name"
+                                                    autoFocus
+                                                />
+                                            </Grid> */}
+
+                                            <Grid item xs={12}>
+
+                                                <TextField
+                                                    required
+                                                    fullWidth
+                                                    id="amout"
+                                                    label="Amount"
+                                                    name="amount"
+                                                    value={amount}
+                                                    onChange={changeAmount}
+                                                    type="number"
+                                                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+
+                                                />
+                                                {/* <div style={{ width: '100%', textAlign: 'left', marginTop: '10px', fontSize: '0.8rem' }}>
+                                                    *Amount will add in your wallet after the approval
+                                                </div> */}
+                                            </Grid>
+
+
                                         </Grid>
+                                        <LoadingButton
+                                            disabled={isDisabled}
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            sx={{ mt: 3}}
+                                            loading={loading}
+                                        >
+                                            Add Amount
+                                        </LoadingButton>
+                                        <LoadingButton
+                                            disabled={isDisabled}
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            sx={{ mt: 3}}
+                                            loading={loading}
+                                            onClick={() => { setIsAdding(false) }}
+                                        >
+                                            Reduce Amount
+                                        </LoadingButton>
 
-                                        <Grid item xs={12}>
-                                            
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                id="amout"
-                                                label="Amount"
-                                                name="amount"
-
-                                            />
-                                            <div style={{width:'100%', textAlign:'left', marginTop:'10px', fontSize:'0.8rem'}}>
-                                                *Amount will add in your wallet after the approval
-                                            </div>
-                                        </Grid>
-
-
-                                    </Grid>
-                                    <LoadingButton
-                                        disable={loading}
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        loading={loading}
-
-                                    >
-                                        Request Approval
-                                    </LoadingButton>
+                                    </Box>
 
                                 </Box>
 
-                            </Box>
-
-                        </Container>
-                    </ThemeProvider>
-                </div>
-
-            </>}
+                            </Container>
+                        </ThemeProvider>
+                    </div>
+                </>
+            ) : (
+                <Login signin={(isValidUser) => setValidUser(isValidUser)} />
+            )}
         </>
+
 
     );
 }

@@ -1,7 +1,5 @@
 import * as serviceWorker from './worker.js';
 
-//  serviceWorker.register();
-
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
         navigator.serviceWorker.register('/loanify/worker.js', {scope: '/loanify/'}).then(function (registration) {

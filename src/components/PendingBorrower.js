@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Button } from '@mui/material';
 import { Modal } from '@mui/material';
 import { Link } from 'react-router-dom'
@@ -7,14 +7,16 @@ import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import CancelIcon from '@mui/icons-material/Cancel';
 // import StarIcon from '@mui/icons-material/Star';
-
+import fire from '../helpers/db';
 import NumberFormat from 'react-number-format';
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonIcon from '@mui/icons-material/Person';
 // import useWindowDimensions from './Screensize';
 const PendingBorrower = (props) => {
+    props=props.props
     const [open, setOpen] = React.useState(false);
+    const [name, setName] = React.useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -22,24 +24,35 @@ const PendingBorrower = (props) => {
     const handleOpenInfo = () => setOpenInfo(true);
     const handleCloseInfo = () => setOpenInfo(false);
 
-    
+    const setUser=()=>{
+        localStorage.setItem("requestor_id",props.sender)
+        localStorage.setItem("last_page","/dashboardlender/investment")
+    };
+
+    useEffect(() => {
+        fire.database().ref('user/' + props.sender).once('value').then((data) => {
+            setName(data.val().name)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }, []);
 
     return (
         <div className="InvestmentList" >
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Link to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}>
+                <Link onClick={setUser} to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}>
                     <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '2.5rem' }} />
                 </Link>
                 <div style={{ display: 'flex', flexDirection: 'column' }} onClick={handleOpenInfo}>
-                    <span style={{ fontSize: '1rem' }}>{props.name}</span>
-                    {props.amount && <span ><NumberFormat style={{ fontSize:'1rem',fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>}
-                    <span style={{ fontSize:'1rem',display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span>
+                    <span style={{ fontSize: '0.9rem' }}>{name}</span>
+                    <span ><NumberFormat style={{ fontSize: '1rem', fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
                 </div>
 
 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '80px' }}>
-                {props.cancelable ==="true" ? <Button variant="contained" onClick={handleOpen}>{props.req ? 'Send Request':'cancel'}</Button>:<div style={{fontSize:'1rem', fontStyle:'italic', color:'#666'}}>In progress...</div>}
+                {props.cancelable === "true" ? <Button variant="contained" onClick={handleOpen}>{props.req ? 'Send Request' : 'cancel'}</Button> : <div style={{ fontSize: '1rem', fontStyle: 'italic', color: '#666' }}>In progress...</div>}
 
             </div>
             {/* <Button onClick={handleOpen} variant="contained">Details</Button> */}
@@ -56,43 +69,49 @@ const PendingBorrower = (props) => {
                     </Typography><br /><br />
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
+                            <h4>Requestor</h4>
+                            <p>{name}</p>
+                        </div>
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="detail">
                             <h4>Amount</h4>
-                            <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={14000} /></p>
+                            <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Payment Mode</h4>
-                            <p>Bank Transfer</p>
+                            <p>{props.paymentMode}</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Minimun Tenure</h4>
-                            <p>5 Months</p>
+                            <p>{props.tenure} Month(s)</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Maximun Interest</h4>
-                            <p style={{ display: 'flex' }}>20%</p>
+                            <p style={{ display: 'flex' }}>{props.interest}%</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Morgage</h4>
-                            <p style={{ display: 'flex' }}>No</p>
+                            <p style={{ display: 'flex' }}>{props.morgage === true ? "Yes" : "No"}</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Terms Negotiable</h4>
-                            <p style={{ display: 'flex' }}>Yes</p>
+                            <p style={{ display: 'flex' }}>{props.terms === false ? "No" : "Yes"}</p>
                         </div>
                     </Typography>
                     <br /><br />
                     <div style={{ width: '100%', textAlign: 'center' }}>
-                        <Button variant="contained" onClick={handleCloseInfo}>ok</Button>
+                        <Button variant="contained" onClick={handleCloseInfo}>Close</Button>
                     </div>
 
                 </Box>
@@ -122,7 +141,7 @@ const PendingBorrower = (props) => {
                 </Box>
             </Modal>
 
-            
+
 
         </div>
     )

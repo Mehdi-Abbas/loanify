@@ -1,38 +1,43 @@
-import React, {useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@mui/material';
 import { Modal } from '@mui/material';
 import { Link } from 'react-router-dom'
+import { Radio } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import FormLabel from '@mui/material/FormLabel';
 import StarIcon from '@mui/icons-material/Star';
-import CancelIcon from '@mui/icons-material/Cancel';
+// import CancelIcon from '@mui/icons-material/Cancel';
 // import StarIcon from '@mui/icons-material/Star';
 import fire from '../helpers/db';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { RadioGroup } from '@mui/material';
+import { FormControl } from '@mui/material';
 import NumberFormat from 'react-number-format';
-
+import { LoadingButton } from '@mui/lab';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonIcon from '@mui/icons-material/Person';
 // import useWindowDimensions from './Screensize';
-const LoanRequest = (props) => {
-    props=props.props
+const InvesterTracking = (props) => {
+    props = props.props
     const [open, setOpen] = React.useState(false);
-    const [name, setName] = React.useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const [isSent, setIsSent] = React.useState(false);
+    const [lenderName, setLenderName] = useState();
     const [openInfo, setOpenInfo] = React.useState(false);
     const handleOpenInfo = () => setOpenInfo(true);
     const handleCloseInfo = () => setOpenInfo(false);
 
-    const [openConfirm, setOpenConfirm] = React.useState(false);
-    const handleOpenConfirm = () => setOpenConfirm(true);
-    const handleCloseConfirm = () => setOpenConfirm(false);
-    // const { width } = useWindowDimensions();
-
-    const handleCancel=()=>{
-        handleClose()
+    const handleCancel = () => {
         fire.database().ref('request/' + props._key).update({
-            statusCode:"-1"
+            statusCode: "-1"
         })
             .then(() => {
                 window.location.reload()
@@ -44,65 +49,47 @@ const LoanRequest = (props) => {
                 alert(errorMessage);
                 console.log(error);
             });
-    };
-
-    const handleAccept=()=>{
-        handleCloseConfirm()
-        handleClose()
-        fire.database().ref('request/' + props._key).update({
-            statusCode:"1"
-        })
-            .then(() => {
-                window.location.reload()
-            })
-            .catch(function (error) {
-                // Handle Errors here.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                alert(errorMessage);
-                console.log(error);
-            });
-    };
-
-    const setUser=()=>{
-        localStorage.setItem("requestor_id",props.sender)
-        localStorage.setItem("last_page","/dashboardlender/investment")
     };
 
 
     useEffect(() => {
-        fire.database().ref('user/' + props.sender).once('value').then((data) => {
-            setName(data.val().name)
+        fire.database().ref('user').once('value').then((data) => {
+            data.forEach(child => {
+                if (child.key === props.receiver) {
+                    setLenderName(child.val().name)
+                }
+            });
 
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }, []);
+        })
+    }, [])
+
+
 
     return (
         <div className="InvestmentList" >
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Link onClick={setUser} to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}>
-                    <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '2.5rem' }}/>
-                </Link>
-                <div style={{ display: 'flex', flexDirection: 'column' }} onClick={handleOpenInfo}>
-                    <span style={{ fontSize: '0.9rem' }}>{name}</span>
-                    <span ><NumberFormat style={{ fontSize:'1rem', fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
-                    {/* <span style={{  fontSize:'1rem',display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span> */}
+                {/* <Link to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}> */}
+                <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '2.5rem' }} />
+                {/* </Link> */}
+                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }} onClick={handleOpen}>
+                    <span style={{ fontSize: '1rem', display: 'flex', alignItems: 'center', color: '#0008' }}>{lenderName}</span>
+                    <span style={{ fontSize: '1rem' }}><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
                 </div>
 
 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '80px' }}>
-                <CancelIcon onClick={handleOpen} style={{ color: "rgb(225 69 69)", fontSize: '2rem' }} />
-                <CheckCircleIcon onClick={handleOpenConfirm} style={{ color: "rgb(19 154 19)", fontSize: '2rem' }} />
+                {
+                    props.statusCode === "0" ?
+                        <Button disabled={isSent} variant="contained" onClick={handleOpenInfo} sx={{ textTransform: 'none' }}>Cancel</Button> :
+                        props.statusCode === "1" && <div style={{fontSize:'1rem', fontStyle:'italic', color:'#666'}}>In progress...</div>
+                }
 
             </div>
-            {/* <Button onClick={handleOpen} variant="contained">Details</Button> */}
 
             <Modal
-                open={openInfo}
-                onClose={handleCloseInfo}
+                open={open}
+                onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -112,8 +99,8 @@ const LoanRequest = (props) => {
                     </Typography><br /><br />
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
-                            <h4>Requestor</h4>
-                            <p>{name}</p>
+                            <h4>Lender</h4>
+                            <p>{lenderName}</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -143,7 +130,7 @@ const LoanRequest = (props) => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Morgage</h4>
-                            <p style={{ display: 'flex' }}>{props.morgage === true ? "Yes" : "No"}</p>
+                            <p style={{ display: 'flex' }}>{props.morgage === false ? "No" : "Yes"}</p>
                         </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -154,15 +141,15 @@ const LoanRequest = (props) => {
                     </Typography>
                     <br /><br />
                     <div style={{ width: '100%', textAlign: 'center' }}>
-                        <Button variant="contained" onClick={handleCloseInfo}>Close</Button>
+                        <Button variant="contained" onClick={handleClose} sx={{ textTransform: 'none' }}>Close</Button>
                     </div>
 
                 </Box>
             </Modal>
 
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={openInfo}
+                onClose={handleCloseInfo}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -178,37 +165,15 @@ const LoanRequest = (props) => {
 
                     <div style={{ width: '100%', textAlign: 'center' }}>
                         <Button style={{ margin: '0 10px' }} onClick={handleCancel} variant="contained">Yes</Button>
-                        <Button style={{ margin: '0 10px' }} onClick={handleClose} variant="contained">No</Button>
+                        <Button style={{ margin: '0 10px' }} onClick={handleCloseInfo} variant="contained">No</Button>
                     </div>
 
                 </Box>
             </Modal>
 
-            <Modal
-                open={openConfirm}
-                onClose={handleCloseConfirm}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    {/* <Typography id="modal-modal-title" variant="h4" component="h2">
-                        {props.name}
-                    </Typography><br /><br /> */}
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div style={{ textAlign: 'center', marginBottom: '10px' }} >
-                            <img src="dollar.png" style={{width:'90px'}}/>
-                            <p>Verification Service Charges (<b>VSC*</b>) and <b>Tax*</b> will be applied which are <b>refundable</b> if you cancel the service with in <b>48 hours</b>, do you wish to proceed?</p>
-                        </div>
-                    </Typography>
 
-                    <div style={{ width: '100%', textAlign: 'center' }}>
-                        <Button style={{ margin: '0 10px' }} onClick={handleAccept} variant="contained">Yes</Button>
-                        <Button style={{ margin: '0 10px' }} onClick={handleCloseConfirm} variant="contained">No</Button>
-                    </div>
-                    <div style={{fontSize:'0.9rem', color:'blue', marginTop:'30px'}}>*Learn more about applied VSC and Tax</div>
 
-                </Box>
-            </Modal>
+
 
         </div>
     )
@@ -227,4 +192,4 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-export default LoanRequest
+export default InvesterTracking

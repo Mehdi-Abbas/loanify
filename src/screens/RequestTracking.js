@@ -17,6 +17,8 @@ import LoanRequest from '../components/LoanRequest';
 import PendingBorrower from '../components/PendingBorrower';
 import VerifiedBorrower from '../components/VerifiedBorrower';
 import Login from "./Login"
+import fire from '../helpers/db';
+import InvesterTracking from "../components/InvesterTracking";
 // import PropTypes from 'prop-types';
 
 
@@ -24,6 +26,7 @@ import Login from "./Login"
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
     const [validUser, setValidUser] = useState(false);
+    const [APIData, setAPIData] = useState([])
 
     // let { url } = useRouteMatch();
     // console.log(url)
@@ -32,6 +35,18 @@ const Investment = () => {
         const userRole = localStorage.getItem('role');
 
         setValidUser(userEmail && userRole && userRole === 'borrower')
+
+        fire.database().ref('request').once('value').then((data) => {
+            var temp=[]
+            data.forEach(child => {
+                if(child.val().sender === localStorage.getItem('user_id') && child.val().statusCode === '0' || child.val().statusCode === '1')
+                    temp.push({...child.val(), _key:child.key})
+            });
+            setAPIData(temp)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
     useEffect(() => {
         userState();
@@ -45,13 +60,14 @@ const Investment = () => {
                         <div className="investmentContainer" style={{ width: width }}>
 
                             <div className='investments'>
-                                <PendingBorrower name="Ahmed Ali" rating="4.5" cancelable="true" />
-                                <PendingBorrower name="Mohammad Saad" rating="4.5" cancelable="true" />
-                                <PendingBorrower name="Bilal Khan" rating="4.5" cancelable="true" />
-                                <PendingBorrower name="Ahsan Raza" rating="4.5" cancelable="true" />
-                                <PendingBorrower name="Fawad Hassan" rating="4.5" cancelable="true" />
-                                <PendingBorrower name="Aliza Sheikh" rating="4.5" cancelable="true" />
-
+                                { APIData.length > 0 ?
+                                    APIData.map((item, key) => {
+                                        return (
+                                            <InvesterTracking key={key} props={item}/>
+                                        )
+                                    }):
+                                    "No request found"
+                                }
                             </div>
                         </div>
 

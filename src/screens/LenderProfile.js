@@ -17,15 +17,16 @@ import fire from '../helpers/db';
 const LenderProfile = (props) => {
 
     const [validUser, setValidUser] = useState(false);
-    const [gender, setGender] = useState("Not set")
-    const [maritalStatus, setMaritalStatus] = useState("Not set")
-    const [jobStatus, setJobStatus] = useState("Not set")
-    const [fetchedName, setFetchedName] = useState("Not set")
-    const [fetchedNationality, setFetchNationality] = useState("Not set")
-    const [fetchedCurrentCity, setFetchedCurrentCity] = useState("Not set")
-    const [fetchedLanguage, setFetchedLanguage] = useState("Not set")
-    const [fetchedContactNumber, setFetchedContactNumber] = useState("Not set")
-    const [fetchedAge, setFetchedAge] = useState("Not set")
+    const [gender, setGender] = useState()
+    const [maritalStatus, setMaritalStatus] = useState()
+    const [jobStatus, setJobStatus] = useState()
+    const [fetchedName, setFetchedName] = useState()
+    const [fetchedNationality, setFetchNationality] = useState()
+    const [fetchedCurrentCity, setFetchedCurrentCity] = useState()
+    const [fetchedLanguage, setFetchedLanguage] = useState()
+    const [fetchedContactNumber, setFetchedContactNumber] = useState()
+    const [fetchedAge, setFetchedAge] = useState()
+    const [fetchedInterest, setFetchedInterest] = useState()
 
     function capitalize(str) {
         const lower = str.toLowerCase();
@@ -50,6 +51,7 @@ const LenderProfile = (props) => {
             data.val().gender && (setGender(data.val().gender.toLowerCase()))
             data.val().maritalStatus && (setMaritalStatus(data.val().maritalStatus.toLowerCase()))
             data.val().jobStatus && (setJobStatus(data.val().jobStatus.toLowerCase()))
+            data.val().interest && (setFetchedInterest(data.val().interest.toLowerCase()))
 
             //console.log(data.val())
 
@@ -136,8 +138,8 @@ const LenderProfile = (props) => {
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
-                                    <h4>Rating</h4>
-                                    <p style={{ display: 'flex' }}>3.5  <StarIcon fontSize='small' /></p>
+                                    <h4>Interest</h4>
+                                    <p>{fetchedInterest}%</p>
                                 </div>
                             </Typography>
 

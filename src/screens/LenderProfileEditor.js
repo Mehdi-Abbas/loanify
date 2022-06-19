@@ -49,6 +49,7 @@ const LenderProfileEditor = (props) => {
     const [fetchedLanguage, setFetchedLanguage] = useState()
     const [fetchedContactNumber, setFetchedContactNumber] = useState()
     const [fetchedAge, setFetchedAge] = useState()
+    const [fetchedInterest, setFetchedInterest] = useState()
 
 
 
@@ -68,6 +69,7 @@ const LenderProfileEditor = (props) => {
             data.val().gender && (setGender(data.val().gender.toLowerCase()))
             data.val().maritalStatus && (setMaritalStatus(data.val().maritalStatus.toLowerCase()))
             data.val().jobStatus && (setJobStatus(data.val().jobStatus.toLowerCase()))
+            data.val().interest && (setFetchedInterest(data.val().interest.toLowerCase()))
 
             setIsDisabled(false)
 
@@ -108,6 +110,9 @@ const LenderProfileEditor = (props) => {
     const changeContactNumber = (e) => {
         setFetchedContactNumber(e.target.value)
     }
+    const changeInterest = (e) => {
+        setFetchedInterest(e.target.value)
+    }
 
     const handleSubmit = (event) => {
         setLoad(true)
@@ -126,6 +131,7 @@ const LenderProfileEditor = (props) => {
         let cn = data.get('contactNumber')
         let mr = data.get('maritalStatus')
         let jb = data.get('jobStatus')
+        let it = data.get('interest')
 
         fire.database().ref('user/' + localStorage.getItem('user_id')).update({
             name: nm,
@@ -136,7 +142,8 @@ const LenderProfileEditor = (props) => {
             language: lg,
             contactNumber: cn,
             maritalStatus: mr,
-            jobStatus: jb
+            jobStatus: jb,
+            interest:it
         })
             .then(() => {
                 setIsUpdated(true)
@@ -268,6 +275,19 @@ const LenderProfileEditor = (props) => {
                                                     autoComplete="currentCity"
                                                     value={fetchedCurrentCity || ''}
                                                     onChange={changeCurrentCity}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <TextField
+                                                    required
+                                                    fullWidth
+                                                    name="interest"
+                                                    label="Interest"
+                                                    type="text"
+                                                    id="interest"
+                                                    autoComplete="interest"
+                                                    value={fetchedInterest || ''}
+                                                    onChange={changeInterest}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>

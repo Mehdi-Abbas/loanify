@@ -16,6 +16,8 @@ import { useTheme } from '@mui/material/styles';
 import LoanRequest from '../components/LoanRequest';
 import PendingBorrower from '../components/PendingBorrower';
 import VerifiedBorrower from '../components/VerifiedBorrower';
+import InvesterTracking from "../components/InvesterTracking";
+import fire from '../helpers/db';
 import Login from "./Login"
 // import PropTypes from 'prop-types';
 
@@ -24,6 +26,7 @@ import Login from "./Login"
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
     const [validUser, setValidUser] = useState(false);
+    const [APIData, setAPIData] = useState([])
 
     // let { url } = useRouteMatch();
     // console.log(url)
@@ -32,6 +35,17 @@ const Investment = () => {
         const userRole = localStorage.getItem('role');
 
         setValidUser(userEmail && userRole && userRole === 'borrower')
+        fire.database().ref('request').once('value').then((data) => {
+            var temp=[]
+            data.forEach(child => {
+                if(child.val().sender === localStorage.getItem('user_id') && (child.val().statusCode === '2' || child.val().statusCode === '3'))
+                    temp.push({...child.val(), _key:child.key})
+            });
+            setAPIData(temp)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
     useEffect(() => {
         userState();
@@ -46,12 +60,14 @@ const Investment = () => {
 
                             <div className='investments'>
                                 {/* <VerifiedBorrower */}
-                                <VerifiedBorrower name="Ahmed Ali" rating="4.5" loan="true" />
-                                <VerifiedBorrower name="Mohammad Saad" rating="4.5" loan="true" />
-                                <VerifiedBorrower name="Bilal Khan" rating="4.5" loan="true" />
-                                <VerifiedBorrower name="Ahsan Raza" rating="4.5" loan="true" />
-                                <VerifiedBorrower name="Fawad Hassan" rating="4.5" loan="true" />
-                                <VerifiedBorrower name="Aliza Sheikh" rating="4.5" loan="true" />
+                                { APIData.length > 0 ?
+                                    APIData.map((item, key) => {
+                                        return (
+                                            <InvesterTracking key={key} props={item}/>
+                                        )
+                                    }):
+                                    "No request found"
+                                }
 
                             </div>
                         </div>

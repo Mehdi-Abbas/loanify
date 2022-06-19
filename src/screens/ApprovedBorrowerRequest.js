@@ -15,8 +15,10 @@ import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import LoanRequest from '../components/LoanRequest';
 import PendingBorrower from '../components/PendingBorrower';
-import VerifiedBorrower from '../components/VerifiedBorrower';
+import ApprovedBorrower from "../components/ApprovedBorrower";
 import Login from "./Login"
+import fire from '../helpers/db';
+
 // import PropTypes from 'prop-types';
 
 
@@ -24,6 +26,7 @@ import Login from "./Login"
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
     const [validUser, setValidUser] = useState(false);
+    const [verifiedBorrowers, setVerifiedBorrowers] = useState([])
 
     // let { url } = useRouteMatch();
     // console.log(url)
@@ -32,6 +35,17 @@ const Investment = () => {
         const userRole = localStorage.getItem('role');
 
         setValidUser(userEmail && userRole && userRole === 'inspection')
+
+        var temp = []
+
+
+        fire.database().ref('request').once('value').then((data) => {
+            data.forEach(child => {
+                if(child.val().statusCode === '1')
+                    temp.push({...child.val(), _key:child.key})
+            });
+            setVerifiedBorrowers(temp)
+        });
     }
 
     useEffect(() => {
@@ -47,12 +61,16 @@ const Investment = () => {
 
                             <div className='investments'>
                                 {/* <VerifiedBorrower */}
-                                <VerifiedBorrower name="Ahmed Ali" amount="14000" rating="4.5" />
-                                <VerifiedBorrower name="Mohammad Saad" amount="14000" rating="4.5" />
-                                <VerifiedBorrower name="Bilal Khan" amount="14000" rating="4.5" />
-                                <VerifiedBorrower name="Ahsan Raza" amount="14000" rating="4.5" />
-                                <VerifiedBorrower name="Fawad Hassan" amount="14000" rating="4.5" />
-                                <VerifiedBorrower name="Aliza Sheikh" amount="14000" rating="4.5" />
+                                {verifiedBorrowers.length > 0 ?
+                                    verifiedBorrowers.map((item, key) => {
+                                        return (
+                                                <ApprovedBorrower key={key} props={item} />
+                                            )
+                                        
+
+                                    }) :
+                                    "No approved borrower found"
+                                }
 
                             </div>
                         </div>

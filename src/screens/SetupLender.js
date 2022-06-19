@@ -34,7 +34,7 @@ const Signup = () => {
     const [isUpdated, setIsUpdated] = useState(false);
     const [isDisabled, setIsDisabled] = useState(true);
     const [isAdding, setIsAdding] = useState(true);
-    
+
 
 
     // const handleSubmit = (event) => {
@@ -59,8 +59,7 @@ const Signup = () => {
             data.val().balance && (setFetchedAmount(data.val().balance))
 
             setIsDisabled(false)
-            setIsUpdated(true)
-            setTimeout(() => { setIsUpdated(false) }, 3000)
+
         })
     }
 
@@ -83,7 +82,8 @@ const Signup = () => {
         })
             .then(() => {
 
-
+                setIsUpdated(true)
+                setTimeout(() => { setIsUpdated(false) }, 3000)
                 setLoad(false)
                 setIsAdding(true)
             })
@@ -133,7 +133,7 @@ const Signup = () => {
                                         </div>
                                     </div>
                                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                                        <Grid container spacing={2} sx={{mb:1}}>
+                                        <Grid container spacing={2} sx={{ mb: 1 }}>
                                             {/* <Grid item xs={12}>
                                                 <TextField
                                                     required
@@ -166,27 +166,30 @@ const Signup = () => {
 
 
                                         </Grid>
-                                        <LoadingButton
-                                            disabled={isDisabled}
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            sx={{ mt: 3}}
-                                            loading={loading}
-                                        >
-                                            Add Amount
-                                        </LoadingButton>
-                                        <LoadingButton
-                                            disabled={isDisabled}
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            sx={{ mt: 3}}
-                                            loading={loading}
-                                            onClick={() => { setIsAdding(false) }}
-                                        >
-                                            Reduce Amount
-                                        </LoadingButton>
+                                        <Box sx={{ display: 'flex', flexDirection:'column' }}>
+                                            <LoadingButton
+                                                disabled={isDisabled}
+                                                type="submit"
+                                                variant="contained"
+                                                color='success'
+                                                loading={loading}
+                                                sx={{ mt: 3 }}
+                                            >
+                                                Add Amount
+                                            </LoadingButton>
+                                            <LoadingButton
+                                                disabled={isDisabled}
+                                                type="submit"
+                                                color="error"
+                                                variant="contained"
+                                                sx={{ mt: 2 }}
+                                                loading={loading}
+                                                onClick={() => { setIsAdding(false) }}
+                                            >
+                                                Reduce Amount
+                                            </LoadingButton>
+                                        </Box>
+
 
                                     </Box>
 

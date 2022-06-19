@@ -194,7 +194,7 @@ const Login = (props) => {
                                 </FormControl>
 
                                 <LoadingButton
-                                    disable={loading}
+                                    disable={`${loading}`}
                                     type="submit"
                                     fullWidth
                                     variant="contained"

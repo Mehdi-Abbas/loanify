@@ -63,7 +63,6 @@ const InstallmentPaid = (props) => {
                                 <TextField
                                     required
                                     name="date"
-                                    required
                                     fullWidth
                                     id="date"
                                     label="Date"

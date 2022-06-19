@@ -13,10 +13,11 @@ import NumberFormat from 'react-number-format';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonIcon from '@mui/icons-material/Person';
 // import useWindowDimensions from './Screensize';
-const LoanRequest = (props) => {
+const ApprovalRequest = (props) => {
     props=props.props
     const [open, setOpen] = React.useState(false);
     const [name, setName] = React.useState('');
+    const [lenderName, setLenderName] = React.useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -32,7 +33,7 @@ const LoanRequest = (props) => {
     const handleCancel=()=>{
         handleClose()
         fire.database().ref('request/' + props._key).update({
-            statusCode:"-1"
+            statusCode:"-2"
         })
             .then(() => {
                 window.location.reload()
@@ -50,7 +51,7 @@ const LoanRequest = (props) => {
         handleCloseConfirm()
         handleClose()
         fire.database().ref('request/' + props._key).update({
-            statusCode:"1"
+            statusCode:"2"
         })
             .then(() => {
                 window.location.reload()
@@ -64,15 +65,16 @@ const LoanRequest = (props) => {
             });
     };
 
-    const setUser=()=>{
-        localStorage.setItem("requestor_id",props.sender)
-        localStorage.setItem("last_page","/dashboardlender/investment")
-    };
-
 
     useEffect(() => {
         fire.database().ref('user/' + props.sender).once('value').then((data) => {
             setName(data.val().name)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
+        fire.database().ref('user/' + props.receiver).once('value').then((data) => {
+            setLenderName(data.val().name)
 
         }).catch(function (error) {
             console.log(error);
@@ -82,10 +84,10 @@ const LoanRequest = (props) => {
     return (
         <div className="InvestmentList" >
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Link onClick={setUser} to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}>
+                {/* <Link onClick={setUser} to="/dashboardlender/investment/borrowerdetails" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginRight: '10px' }}> */}
                     <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '2.5rem' }}/>
-                </Link>
-                <div style={{ display: 'flex', flexDirection: 'column' }} onClick={handleOpenInfo}>
+                {/* </Link> */}
+                <div style={{ display: 'flex', flexDirection: 'column', marginLeft:'8px' }} onClick={handleOpenInfo}>
                     <span style={{ fontSize: '0.9rem' }}>{name}</span>
                     <span ><NumberFormat style={{ fontSize:'1rem', fontWeight: 'bold', backgroundColor: 'rgb(72 163 72)', padding: '2px 4px', borderRadius: '5px', color: 'white', width: 'auto' }} displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={props.amount} /></span>
                     {/* <span style={{  fontSize:'1rem',display: 'flex', alignItems: 'center', color: '#0008' }}>{props.rating} <StarIcon fontSize='small' /></span> */}
@@ -110,6 +112,12 @@ const LoanRequest = (props) => {
                     <Typography id="modal-modal-title" variant="h4" component="h2">
                         Request Details
                     </Typography><br /><br />
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="detail">
+                            <h4>Lender</h4>
+                            <p>{lenderName}</p>
+                        </div>
+                    </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="detail">
                             <h4>Requestor</h4>
@@ -196,8 +204,8 @@ const LoanRequest = (props) => {
                     </Typography><br /><br /> */}
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div style={{ textAlign: 'center', marginBottom: '10px' }} >
-                            <img src="dollar.png" style={{width:'90px'}}/>
-                            <p>Verification Service Charges (<b>VSC*</b>) and <b>Tax*</b> will be applied which are <b>refundable</b> if you cancel the service with in <b>48 hours</b>, do you wish to proceed?</p>
+                            {/* <img src="dollar.png" style={{width:'90px'}}/> */}
+                            <p>Are you sure you want to approve the loan request?</p>
                         </div>
                     </Typography>
 
@@ -205,7 +213,7 @@ const LoanRequest = (props) => {
                         <Button style={{ margin: '0 10px' }} onClick={handleAccept} variant="contained">Yes</Button>
                         <Button style={{ margin: '0 10px' }} onClick={handleCloseConfirm} variant="contained">No</Button>
                     </div>
-                    <div style={{fontSize:'0.9rem', color:'blue', marginTop:'30px'}}>*Learn more about applied VSC and Tax</div>
+                    {/* <div style={{fontSize:'0.9rem', color:'blue', marginTop:'30px'}}>*Learn more about applied VSC and Tax</div> */}
 
                 </Box>
             </Modal>
@@ -227,4 +235,4 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-export default LoanRequest
+export default ApprovalRequest

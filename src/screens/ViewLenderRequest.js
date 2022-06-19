@@ -7,13 +7,14 @@ import InvestmentUnit from '../components/Investment'
 import Titlebar from '../components/Titlebar';
 import { Tab, Tabs } from '@mui/material';
 // import { TabPanel } from '@mui/lab';
+import fire from '../helpers/db';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
-import LoanRequest from '../components/LoanRequest';
+import ApprovalRequest from "../components/ApprovalRequest";
 import PendingBorrower from '../components/PendingBorrower';
 import VerifiedBorrower from '../components/VerifiedBorrower';
 import Login from "./Login"
@@ -24,6 +25,7 @@ import Login from "./Login"
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
     const [validUser, setValidUser] = useState(false);
+    const [APIData, setAPIData] = useState([])
 
     // let { url } = useRouteMatch();
     // console.log(url)
@@ -32,6 +34,17 @@ const Investment = () => {
         const userRole = localStorage.getItem('role');
 
         setValidUser(userEmail && userRole && userRole === 'inspection')
+        fire.database().ref('request').once('value').then((data) => {
+            var temp=[]
+            data.forEach(child => {
+                if(child.val().statusCode === '1')
+                    temp.push({...child.val(), _key:child.key})
+            });
+            setAPIData(temp)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     useEffect(() => {
@@ -47,13 +60,14 @@ const Investment = () => {
 
                             <div className='investments'>
                                 {/* <LoanRequest name="" */}
-                                <LoanRequest name="Ahmed Ali" amount="14000" rating="4.5" />
-                                <LoanRequest name="Mohammad Saad" amount="14000" rating="4.5" />
-                                <LoanRequest name="Bilal Khan" amount="14000" rating="4.5" />
-                                <LoanRequest name="Ahsan Raza" amount="14000" rating="4.5" />
-                                <LoanRequest name="Fawad Hassan" amount="14000" rating="4.5" />
-                                <LoanRequest name="Aliza Sheikh" amount="14000" rating="4.5" />
-
+                                { APIData.length > 0 ?
+                                    APIData.map((item, key) => {
+                                        return (
+                                            <ApprovalRequest key={key} props={item}/>
+                                        )
+                                    }):
+                                    "No request found"
+                                }
                             </div>
                         </div>
 

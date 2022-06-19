@@ -7,6 +7,7 @@ import InvestmentUnit from '../components/Investment'
 import Titlebar from '../components/Titlebar';
 import { Tab, Tabs } from '@mui/material';
 // import { TabPanel } from '@mui/lab';
+import fire from '../helpers/db';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -58,6 +59,10 @@ function a11yProps(index) {
 const Investment = () => {
     const { height, width } = UseWindowDimensions();
     const theme = useTheme();
+    const [requests, setRequest] = useState([])
+    const [pendingApprovals, setPendingApprovals] = useState([])
+    const [verifiedBorrowers, setVerifiedBorrowers] = useState([])
+    const [investmentAllottees, setInvestmentAllottees] = useState([])
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -75,8 +80,41 @@ const Investment = () => {
     const userState = () => {
         const userEmail = localStorage.getItem('user');
         const userRole = localStorage.getItem('role');
+        var temp1=[]
+        var temp2=[]
+        var temp3=[]
+        var temp4=[]
 
         setValidUser(userEmail && userRole && userRole === 'lender')
+
+        
+        fire.database().ref('request').once('value').then((data) => {
+            data.forEach(child => {
+                if(child.val().receiver === localStorage.getItem("user_id")){
+                    switch(child.val().statusCode){
+                        case "0":
+                            temp1.push({...child.val(), _key:child.key})
+                            break;
+                        case "1":
+                            temp2.push({...child.val(), _key:child.key})
+                            break;
+                        case "2":
+                            temp3.push({...child.val(), _key:child.key})
+                            break;
+                        case "3":
+                            temp4.push({...child.val(), _key:child.key})
+                            break;
+                    }
+                }
+            });
+            setRequest(temp1)
+            setPendingApprovals(temp2)
+            setVerifiedBorrowers(temp3)
+            setInvestmentAllottees(temp4)
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     useEffect(() => {
@@ -88,19 +126,15 @@ const Investment = () => {
                 <>
                     <div style={{ minHeight: height, width: width }}>
                         <Titlebar title="Loans" backlink="/dashboardlender" />
-                        <div className="setting-icon">
-                            <Link to={"/dashboardlender/investment/lendersetting"}><img src="setting.png"></img></Link>
-                        </div>
-                        
-                        <Box sx={{ bgcolor: 'background.paper', width: width, p: '0px' }}>
+                        <Box sx={{ bgcolor: 'background.paper', width: width, p: '0px' , mt:4}}>
                             <AppBar position="static">
                                 <Tabs
                                     value={value}
                                     onChange={handleChange}
-                                    indicatorColor='false'
+                                    indicatorColor={false}
                                     textColor="inherit"
                                     variant="fullWidth"
-                                    disableRipple="true"
+                                    disableripple="true"
                                     disableTouchRipple='true'
                                     aria-label="full width tabs example"
                                     sx={{
@@ -123,10 +157,10 @@ const Investment = () => {
                                         }
                                     }}
                                 >
-                                    <Tab disableRipple label="Loan Requests" {...a11yProps(0)} />
-                                    <Tab disableRipple label="Pending Verifications" {...a11yProps(1)} />
-                                    <Tab disableRipple label="Verified Borrowers" {...a11yProps(2)} />
-                                    <Tab disableRipple label="Investment Allottees" {...a11yProps(3)} />
+                                    <Tab disableripple label="Loan Requests" {...a11yProps(0)} />
+                                    <Tab disableripple label="Pending Verifications" {...a11yProps(1)} />
+                                    <Tab disableripple label="Verified Borrowers" {...a11yProps(2)} />
+                                    <Tab disableripple label="Investment Allottees" {...a11yProps(3)} />
                                 </Tabs>
                             </AppBar>
                             <SwipeableViews
@@ -140,12 +174,17 @@ const Investment = () => {
 
                                         <div className='investments'>
                                             {/* <LoanRequest name="" */}
-                                            <LoanRequest name="Ahmed Ali" amount="14000" rating="4.5" />
-                                            <LoanRequest name="Mohammad Saad" amount="14000" rating="4.5" />
-                                            <LoanRequest name="Bilal Khan" amount="14000" rating="4.5" />
-                                            <LoanRequest name="Ahsan Raza" amount="14000" rating="4.5" />
-                                            <LoanRequest name="Fawad Hassan" amount="14000" rating="4.5" />
-                                            <LoanRequest name="Aliza Sheikh" amount="14000" rating="4.5" />
+                                            {requests.length > 0 ?
+                                                requests.map((item, key) => {
+                                                    if (item.statusCode === '0') {
+                                                        return (
+                                                            <LoanRequest key={key} props={item} />
+                                                        )
+                                                    }
+
+                                                }):
+                                                "No request found"
+                                            }
 
                                         </div>
                                     </div>
@@ -154,13 +193,17 @@ const Investment = () => {
                                     <div className="investmentContainer" style={{ margin: '-24px', width: width }}>
 
                                         <div className='investments'>
-                                            <PendingBorrower name="Ahmed Ali" amount="14000" rating="4.5" cancelable="true" />
-                                            <PendingBorrower name="Mohammad Saad" amount="14000" rating="4.5" cancelable="true" />
-                                            <PendingBorrower name="Bilal Khan" amount="14000" rating="4.5" cancelable="false" />
-                                            <PendingBorrower name="Ahsan Raza" amount="14000" rating="4.5" cancelable="false" />
-                                            <PendingBorrower name="Fawad Hassan" amount="14000" rating="4.5" cancelable="false" />
-                                            <PendingBorrower name="Aliza Sheikh" amount="14000" rating="4.5" cancelable="false" />
+                                            {pendingApprovals.length > 0 ?
+                                                pendingApprovals.map((item, key) => {
+                                                    if (item.statusCode === "1") {
+                                                        return (
+                                                            <PendingBorrower key={key} props={item} />
+                                                        )
+                                                    }
 
+                                                }):
+                                                "No pending verification found"
+                                            }
                                         </div>
                                     </div>
                                 </TabPanel>
@@ -169,12 +212,17 @@ const Investment = () => {
 
                                         <div className='investments'>
                                             {/* <VerifiedBorrower */}
-                                            <VerifiedBorrower name="Ahmed Ali" amount="14000" rating="4.5" />
-                                            <VerifiedBorrower name="Mohammad Saad" amount="14000" rating="4.5" />
-                                            <VerifiedBorrower name="Bilal Khan" amount="14000" rating="4.5" />
-                                            <VerifiedBorrower name="Ahsan Raza" amount="14000" rating="4.5" />
-                                            <VerifiedBorrower name="Fawad Hassan" amount="14000" rating="4.5" />
-                                            <VerifiedBorrower name="Aliza Sheikh" amount="14000" rating="4.5" />
+                                            {verifiedBorrowers.length > 0 ?
+                                                verifiedBorrowers.map((item, key) => {
+                                                    if (item.statusCode === "2") {
+                                                        return (
+                                                            <VerifiedBorrower key={key} props={item} />
+                                                        )
+                                                    }
+
+                                                }):
+                                                "No verified borrower found"
+                                            }
 
                                         </div>
                                     </div>
@@ -184,12 +232,17 @@ const Investment = () => {
 
                                         <div className='investments'>
                                             {/* <InvestmentUnit name="Ahmed Ali" /> */}
-                                            <InvestmentUnit name="Ahmed Ali" rating="4.5" />
-                                            <InvestmentUnit name="Mohammad Saad" rating="4.5" />
-                                            <InvestmentUnit name="Bilal Khan" rating="4.5" />
-                                            <InvestmentUnit name="Ahsan Raza" rating="4.5" />
-                                            <InvestmentUnit name="Fawad Hassan" rating="4.5" />
-                                            <InvestmentUnit name="Aliza Sheikh" rating="4.5" />
+                                            {investmentAllottees.length > 0 ?
+                                                investmentAllottees.map((item, key) => {
+                                                    if (item.statusCode === "3") {
+                                                        return (
+                                                            <InvestmentUnit key={key} props={item} />
+                                                        )
+                                                    }
+
+                                                }):
+                                                "No investment allottees found"
+                                            }
 
                                         </div>
                                     </div>

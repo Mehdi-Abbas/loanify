@@ -7,11 +7,13 @@ import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import Titlebar from '../components/Titlebar';
 import PersonIcon from '@mui/icons-material/Person';
+import fire from '../helpers/db';
 import NumberFormat from 'react-number-format';
 import Login from './Login';
 const BorrowerDetails = (props) => {
 
     const [validUser, setValidUser] = useState(false);
+    const [user, setUser] = useState();
 
     // let { url } = useRouteMatch();
     // console.log(url)
@@ -19,7 +21,16 @@ const BorrowerDetails = (props) => {
         const userEmail = localStorage.getItem('user');
         const userRole = localStorage.getItem('role');
 
-        setValidUser(userEmail && userRole && userRole === 'lender')
+        setValidUser(userEmail && userRole && (userRole === 'lender' || userRole === 'inspection'))
+
+        fire.database().ref('user/' + localStorage.getItem('requestor_id')).once('value').then((data) => {
+            
+            console.log(data.val())
+            setUser(data.val())
+
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
     useEffect(() => {
@@ -32,14 +43,14 @@ const BorrowerDetails = (props) => {
             {validUser ? (
                 <>
                     <div style={{ width: '100%' }}>
-                        <Titlebar title="Borrower Profile" backlink="/dashboardlender/investment" />
+                        <Titlebar title="Borrower Profile" backlink={localStorage.getItem("last_page")} />
                         <div style={{ display: 'flex', margin: '30px 30px 0px 30px' }}>
                             <div >
                                 <PersonIcon style={{ backgroundColor: '#3d95ee', color: '#fbdd44', padding: '0px', borderRadius: '55px', fontSize: '6rem' }} />
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '20px' }}>
-                                <h1>Ali Ahmed</h1>
-                                <h3>Student</h3>
+                                <h1>{user && user.name}</h1>
+                                <h3>{user && user.jobStatus}</h3>
                             </div>
                         </div>
                         <Box sx={style}>
@@ -47,69 +58,69 @@ const BorrowerDetails = (props) => {
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Gender</h4>
-                                    <p>Male</p>
+                                    <p>{user && user.gender}</p>
                                 </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Age</h4>
-                                    <p>29</p>
+                                    <p>{user && user.age}</p>
                                 </div>
                             </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Place of Birth</h4>
                                     <p>Quetta</p>
                                 </div>
-                            </Typography>
+                            </Typography> */}
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Nationality</h4>
-                                    <p>Pakistani</p>
+                                    <p>{user && user.nationality}</p>
                                 </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Current City</h4>
-                                    <p>Karachi</p>
+                                    <p>{user && user.currentCity}</p>
                                 </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Marital Status</h4>
-                                    <p>Unmarried</p>
+                                    <p>{user && user.maritalStatus}</p>
                                 </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Job Status</h4>
-                                    <p>Employed</p>
+                                    <p>{user && user.jobStatus}</p>
                                 </div>
                             </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Monthly Income</h4>
                                     <p><NumberFormat displayType={'text'} thousandSeparator={true} thousandsGroupStyle="lakh" prefix={'PKR '} value={30000} /></p>
                                 </div>
-                            </Typography>
+                            </Typography> */}
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Language</h4>
-                                    <p>Urdu</p>
+                                    <p>{user && user.language}</p>
                                 </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Contact Number</h4>
-                                    <p>0348-8745239</p>
+                                    <p>{user && user.contactNumber}</p>
                                 </div>
                             </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="detail">
                                     <h4>Rating</h4>
                                     <p style={{ display: 'flex' }}>3.5  <StarIcon fontSize='small' /></p>
                                 </div>
-                            </Typography>
+                            </Typography> */}
 
 
                         </Box>
